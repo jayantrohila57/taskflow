@@ -1,0 +1,50 @@
+model Project {
+    id             String    @id @default(cuid()) @map("id")
+    name           String    @unique @map("name")
+    description    String?   @map("description")
+    slug           String    @map("slug")
+    metadata       Json?     @db.JsonB
+    priority       Int       @default(0) @map("priority")
+    featureFlags   Json?     @map("feature_flags") @db.JsonB
+    code           String    @unique @map("code")
+    color          String?   @map("color")
+    icon           String?   @map("icon")
+    isActive       Boolean   @default(true) @map("is_active")
+    isPrivate      Boolean   @default(false) @map("is_private")
+    isArchived     Boolean   @default(false) @map("is_archived")
+    organizationId String    @map("organization_id")
+    statusId       String?   @map("status_id")
+    typeId         String?   @map("type_id")
+    categoryId     String?   @map("category_id")
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime  @updatedAt @map("updated_at")
+    deletedAt      DateTime? @map("deleted_at")
+    createdBy      String?   @map("created_by")
+    updatedBy      String?   @map("updated_by")
+
+    roles       Role[]        @relation("ProjectRoles")
+    ProjectRole ProjectRole[]
+
+    @@unique([slug], name: "project_slug_unique")
+    @@index([organizationId], name: "project_organization_idx")
+    @@index([statusId], name: "project_status_idx")
+    @@index([typeId], name: "project_type_idx")
+    @@index([categoryId], name: "project_category_idx")
+    @@index([createdAt], name: "project_created_at_idx")
+    @@map("projects")
+}
+
+model ProjectRole {
+    id        String   @id @default(cuid()) @map("id")
+    projectId String   @map("project_id")
+    roleId    String   @map("role_id")
+    project   Project  @relation(fields: [projectId], references: [id])
+    role      Role     @relation(fields: [roleId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([projectId, roleId], name: "project_role_unique")
+    @@index([projectId], name: "project_role_project_idx")
+    @@index([roleId], name: "project_role_role_idx")
+    @@map("project_roles")
+}

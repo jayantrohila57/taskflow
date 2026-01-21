@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-access-control-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Access Control Page",
+  "description": "The access control page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/Access-control/page.tsx",
+      "content": "export default function AccessControl() {\n  return <></>;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/Access-control/page.tsx"
+    }
+  ]
+}

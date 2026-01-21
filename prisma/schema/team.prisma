@@ -1,0 +1,44 @@
+model Team {
+    id             String    @id @default(cuid()) @map("id")
+    name           String    @unique @map("name")
+    description    String?   @map("description")
+    slug           String    @unique @map("slug")
+    color          String?   @map("color")
+    logo           String?   @map("logo_url")
+    metadata       Json?     @db.JsonB
+    visibility     String    @default("organization") @map("visibility")
+    isDiscoverable Boolean   @default(true) @map("is_discoverable")
+    isArchived     Boolean   @default(false) @map("is_archived")
+    isActive       Boolean   @default(true) @map("is_active")
+    isPrivate      Boolean   @default(false) @map("is_private")
+    isDefault      Boolean   @default(false) @map("is_default")
+    organizationId String    @map("organization_id")
+    statusId       String?   @map("status_id")
+    typeId         String?   @map("type_id")
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime  @updatedAt @map("updated_at")
+    deletedAt      DateTime? @map("deleted_at")
+
+    roles       Role[]        @relation("TeamRoles")
+    TeamRole    TeamRole[]
+
+    @@index([organizationId], name: "team_organization_idx")
+    @@index([statusId], name: "team_status_idx")
+    @@index([typeId], name: "team_type_idx")
+    @@map("teams")
+}
+
+model TeamRole {
+    id        String   @id @default(cuid()) @map("id")
+    teamId    String   @map("team_id")
+    roleId    String   @map("role_id")
+    team      Team     @relation(fields: [teamId], references: [id])
+    role      Role     @relation(fields: [roleId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([teamId, roleId], name: "team_role_unique")
+    @@index([teamId], name: "team_role_team_idx")
+    @@index([roleId], name: "team_role_role_idx")
+    @@map("team_roles")
+}

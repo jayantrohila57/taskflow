@@ -1,0 +1,34 @@
+{
+  "i18n-ally.localesPaths": ["src/packages/next-intl/languages"],
+  "i18n-ally.sourceLanguage": "en-US",
+  "tailwindCSS.experimental.classRegex": [
+    ["cva(?:<[^>]*>)?(([^)]*))", "[\"'`]([^\"'`]*).*?[\"'`]", "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]"]
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
+  "eslint.useFlatConfig": true,
+  "eslint.options": {
+    "overrideConfigFile": "eslint.config.js"
+  },
+  "prettier.requireConfig": true,
+  "prettier.configPath": "./prettier.config.js",
+  "i18n-ally.extract.ignoredByFiles": {
+    "eslint.config.js": ["Please import from `@/package/next-intl/utils/routing` instead."]
+  },
+  "i18n-ally.keystyle": "nested",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "cuid",
+    "oklch",
+    "SIGNUP",
+    "simplewebauthn",
+    "Sonner",
+    "typesafety",
+    "webauthn"
+  ],
+  "editor.dropIntoEditor.preferences": [
+    
+  ]
+}

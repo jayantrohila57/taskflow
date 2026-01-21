@@ -1,0 +1,135 @@
+model Organization {
+    // Core Identification
+    id               String    @id @default(cuid()) @map("id")
+    slug             String    @unique @map("slug")
+    image            String?   @map("image")
+    title            String    @unique @map("title")
+    description      String?   @map("description")
+    coverImage       String?   @map("cover_image")
+    // Contact Information
+    primaryEmail     String?   @unique @map("primary_email")
+    // Organization Details
+    missionStatement String?   @map("mission_statement")
+    visionStatement  String?   @map("vision_statement")
+    foundedYear      Int?      @map("founded_year")
+    // Localization
+    timezone         String?   @default("UTC") @map("timezone")
+    language         String?   @default("en-US") @map("language")
+    currency         String?   @default("USD") @map("currency")
+    dateFormat       String?   @default("YYYY-MM-DD") @map("date_format")
+    timeFormat       String?   @default("HH:mm") @map("time_format")
+    // Status Flags
+    isActive         Boolean   @default(true) @map("is_active")
+    isVerified       Boolean   @default(false) @map("is_verified")
+    isPublic         Boolean   @default(true) @map("is_public")
+    // Timestamps
+    createdAt        DateTime  @default(now()) @map("created_at")
+    updatedAt        DateTime  @updatedAt @map("updated_at")
+    deletedAt        DateTime? @map("deleted_at")
+
+    // Relations
+    statusId   String? @map("status_id")
+    categoryId String? @map("category_id")
+
+    typeId             String? @map("type_id")
+    industryId         String? @map("industry_id")
+    organizationSizeId String? @map("organization_size_id")
+    createdByUserId    String? @map("created_by_user_id")
+
+    status   Status?   @relation(fields: [statusId], references: [id])
+    type     Type?     @relation(fields: [typeId], references: [id])
+    category Category? @relation(fields: [categoryId], references: [id])
+
+    industry                Industry?                 @relation(fields: [industryId], references: [id])
+    size                    OrganizationSize?         @relation(fields: [organizationSizeId], references: [id])
+    contacts                Contact[]
+    OrganizationRole        OrganizationRole[]
+    OrganizationAddressLink OrganizationAddressLink[]
+    OrganizationSocialLink  OrganizationSocialLink[]
+
+    @@index([title], name: "organization_title_idx")
+    @@index([slug], name: "organization_slug_idx")
+    @@index([statusId], name: "organization_status_idx")
+    @@index([typeId], name: "organization_type_idx")
+    @@index([industryId], name: "organization_industry_idx")
+    @@index([organizationSizeId], name: "organization_size_idx")
+    @@index([isActive], name: "organization_is_active_idx")
+    @@index([isVerified], name: "organization_is_verified_idx")
+    @@index([isPublic], name: "organization_is_public_idx")
+    @@map("organizations")
+}
+
+model OrganizationSize {
+    id             String         @id @default(cuid()) @map("id")
+    code           String         @unique @map("code")
+    slug           String         @unique @map("slug")
+    title          String         @map("title")
+    description    String?        @map("description")
+    isActive       Boolean        @default(true) @map("is_active")
+    sortOrder      Int            @default(0) @map("sort_order")
+    createdAt      DateTime       @default(now()) @map("created_at")
+    updatedAt      DateTime       @updatedAt @map("updated_at")
+    deletedAt      DateTime?      @map("deleted_at")
+    organizationId String?        @map("organization_id")
+    organizations  Organization[]
+
+    @@index([code])
+    @@index([slug])
+    @@index([isActive])
+    @@index([organizationId])
+    @@map("organization_sizes")
+}
+
+model OrganizationRole {
+    id             String       @id @default(cuid()) @map("id")
+    organizationId String       @map("organization_id")
+    roleId         String       @map("role_id")
+    organization   Organization @relation(fields: [organizationId], references: [id])
+    role           Role         @relation(fields: [roleId], references: [id])
+    createdAt      DateTime     @default(now()) @map("created_at")
+    updatedAt      DateTime     @updatedAt @map("updated_at")
+
+    @@unique([organizationId, roleId], name: "organization_role_unique")
+    @@index([organizationId], name: "organization_role_org_idx")
+    @@index([roleId], name: "organization_role_role_idx")
+    @@map("organization_roles")
+}
+
+model OrganizationAddressLink {
+    id             String  @id @default(cuid()) @map("id")
+    organizationId String  @map("organization_id")
+    addressId      String  @map("address_id")
+    typeId         String? @map("type_id")
+    type           Type?   @relation(fields: [typeId], references: [id])
+    isPrimary      Boolean @default(false) @map("is_primary")
+
+    organization Organization @relation(fields: [organizationId], references: [id])
+    address      Address      @relation(fields: [addressId], references: [id])
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([organizationId, addressId, typeId], name: "organization_address_unique")
+    @@index([organizationId], name: "org_address_link_org_idx")
+    @@index([addressId], name: "org_address_link_address_idx")
+    @@index([typeId], name: "org_address_link_type_idx")
+    @@map("organization_address_links")
+}
+
+model OrganizationSocialLink {
+    id             String @id @default(cuid()) @map("id")
+    organizationId String @map("organization_id")
+    socialLinkId   String @map("social_link_id")
+    displayOrder   Int    @default(0) @map("display_order")
+
+    organization Organization @relation(fields: [organizationId], references: [id])
+    socialLink   SocialLink   @relation(fields: [socialLinkId], references: [id])
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([organizationId, socialLinkId], name: "organization_social_link_unique")
+    @@index([organizationId], name: "org_social_link_org_idx")
+    @@index([socialLinkId], name: "org_social_link_social_link_idx")
+    @@map("organization_social_links")
+}

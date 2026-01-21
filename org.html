@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Organization Management Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Application Structure Plan: 
+        The SPA is structured with a top navigation bar allowing users to jump to key sections of the blueprint: Home (Introduction & Exec Summary), FSD (Functional Specifications), MVP (Minimum Viable Product), User Journeys, Stories (User, Feature, Technical), API Design, Architecture, and Conclusion. 
+        This thematic, tab-like navigation breaks the dense report into manageable, focused sections. 
+        Interactions include:
+        - Clicking navigation items to scroll to/display relevant sections.
+        - Expandable cards for detailed requirements and stories.
+        - Interactive tables for structured data from the report (e.g., FSD sections, MVP features, API endpoints).
+        - A step-by-step visual display for user journeys.
+        - A Chart.js bar chart to compare tenant isolation strategies.
+        - Filtering capabilities for stories and API endpoints.
+        This structure was chosen to enhance usability and understanding by allowing users to explore the report's content in a non-linear, interactive way, rather than just reading a static document. Each section provides context and allows for deeper dives into specific details.
+    -->
+    <!-- Visualization & Content Choices:
+        - Executive Summary & Introduction (Home): Text blocks. Goal: Inform. Interaction: None. Justification: Standard introductory content.
+        - FSD Sections (FSD): Text, lists, interactive HTML table (Table 1), expandable cards for requirements. Goal: Detail FSD components. Interaction: Click to expand, table sorting. Justification: Structured and digestible presentation of specifications.
+        - MVP Details (MVP): Text, lists, interactive HTML table (Table 2). Goal: Detail MVP. Interaction: Table sorting. Justification: Clear scope definition.
+        - User Journeys (User Journeys): Step-by-step visual flow using styled HTML divs/cards. Goal: Illustrate processes. Interaction: Click to navigate steps. Justification: Clarifies complex user interactions. (HTML/CSS for diagrammatic representation).
+        - Stories (Stories): Cards for user, epic, technical stories; interactive HTML table (Table 3). Goal: Detail agile artifacts. Interaction: Filtering by type, table sorting. Justification: Organized view of development tasks.
+        - API Design (API Design): Text for principles; interactive cards for endpoints (Table 4); structured text for data models. Goal: Detail API. Interaction: Expand endpoint details, filter. Justification: Developer-friendly reference.
+        - Architecture (Architecture): Text for concepts; interactive HTML table and Chart.js bar chart for Isolation Strategies (Table 5); HTML table for Roles/Permissions (Table 6). Goal: Explain architecture. Interaction: Table sorting, chart tooltips. Justification: Visual comparison and clear explanation of complex topics. (Chart.js for chart, HTML/CSS for tables).
+        - Conclusion (Conclusion): Text blocks. Goal: Summarize. Interaction: None. Justification: Standard closing content.
+        - Library/Method: Tailwind CSS for layout, Vanilla JS for interactions, Chart.js for the isolation strategies chart.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link { cursor: pointer; }
+        .nav-link.active {
+            border-bottom-width: 2px;
+            border-color: #0284c7; /* sky-600 */
+            color: #0284c7;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #e5e7eb; /* slate-200 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        .card-header {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b; /* slate-800 */
+        }
+        .table-container {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #cbd5e1; /* slate-300 */
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+        th {
+            background-color: #f1f5f9; /* slate-100 */
+            font-weight: 600;
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; /* Tailwind max-w-3xl */
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; /* Tailwind h-96 */
+            max-height: 450px;
+        }
+        .journey-step {
+            border-left: 3px solid #0ea5e9; /* sky-500 */
+            padding-left: 1.5rem;
+            margin-left: 1rem;
+            position: relative;
+        }
+        .journey-step::before {
+            content: '';
+            position: absolute;
+            left: -0.5rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: #0ea5e9; /* sky-500 */
+            border-radius: 9999px;
+            border: 2px solid white;
+        }
+        .accordion-content { display: none; }
+        .api-method-POST { background-color: #10b981; color: white; } /* green-500 */
+        .api-method-GET { background-color: #3b82f6; color: white; }    /* blue-500 */
+        .api-method-PATCH { background-color: #f59e0b; color: white; } /* amber-500 */
+        .api-method-DELETE { background-color: #ef4444; color: white; } /* red-500 */
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tag-user-story { background-color: #dbeafe; color: #1e40af; } /* blue-100, blue-800 */
+        .tag-epic { background-color: #fee2e2; color: #991b1b; } /* red-100, red-800 */
+        .tag-technical-story { background-color: #d1fae5; color: #065f46; } /* green-100, green-700 */
+
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-sky-700">Org Management Blueprint</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600 active" data-target="home">Home</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="fsd">FSD</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="mvp">MVP</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="journeys">User Journeys</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="stories">Stories</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="api">API Design</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="architecture">Architecture</a>
+                        <a class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="conclusion">Conclusion</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-slate-100 inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-sky-600 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600 active" data-target="home">Home</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="fsd">FSD</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="mvp">MVP</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="journeys">User Journeys</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="stories">Stories</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="api">API Design</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="architecture">Architecture</a>
+                <a class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-sky-600" data-target="conclusion">Conclusion</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="home" class="content-section active">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Multi-Tenant SaaS: Organization Management Blueprint</h1>
+                <p class="text-lg text-slate-700 mb-6">This interactive application provides a comprehensive overview of the strategic and technical blueprint for developing a robust organization management module within a multi-tenant SaaS application. Explore the various sections to understand the functional specifications, MVP, user flows, API design, and architectural considerations.</p>
+            </div>
+
+            <div class="card">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">Executive Summary</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    The report details a blueprint for an organization management module, prioritizing a "Shared Database, Separate Schema" model for data isolation and scalability. The MVP focuses on self-serve organization creation and member management. A robust RBAC system integrated with an IAM solution is core to security. This document aims to provide a secure, scalable, and professional foundation, minimizing risks and accelerating time-to-market.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">1.1 Defining Multi-Tenancy</h3>
+                     <p class="text-slate-600 leading-relaxed mb-2">Multi-tenant SaaS serves multiple customers (tenants) from a single software instance, maximizing resource use and reducing costs. Key challenges include data isolation and preventing leakage between tenants. The choice of multi-tenancy model (e.g., shared everything, separate schema) balances cost-efficiency with isolation needs.</p>
+                     <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">Read more...</button>
+                     <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed">
+                        <p>This architectural approach contrasts with single-tenant models where each customer gets a dedicated instance. A core advantage is simplified updates and maintenance. However, sharing resources necessitates careful design to ensure each tenant's experience is customizable without affecting others. The trade-off between cost and isolation is a primary strategic decision.</p>
+                     </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2 text-sky-600">1.2 Importance of Robust Organization Management</h3>
+                    <p class="text-slate-600 leading-relaxed mb-2">The "organization" acts as a distinct workspace or tenant environment. Robust management is key for security, scalability, and efficiency, underpinning tenant provisioning, authentication, authorization, and data management. It's vital for B2B, enabling unique user groups and tailored experiences via RBAC.</p>
+                    <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">Read more...</button>
+                     <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed">
+                        <p>The organization entity is a primary security boundary. It enforces data isolation and granular access control. Mere user-level authentication isn't enough for true tenant isolation; systemic mechanisms are required. The design of this module directly impacts security, compliance, and administrative scalability, ensuring tenant data remains segregated on shared infrastructure.</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fsd" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Functional Specification Document (FSD)</h1>
+                <p class="text-lg text-slate-700 mb-6">The FSD is the blueprint detailing *what* the organization management module will do. This section breaks down the project scope, product overview, detailed functional and non-functional requirements, and error handling strategies. It ensures a shared understanding among all stakeholders.</p>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">2.1 Project Scope and Goals</h2>
+                <p class="text-slate-600 leading-relaxed mb-2"><strong>Scope:</strong> Complete lifecycle of an organization (create, join, manage, edit, delete), including user roles and permissions.</p>
+                <p class="text-slate-600 leading-relaxed mb-1"><strong>Primary Goals:</strong></p>
+                <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4 mb-2">
+                    <li>Self-Serve Empowerment: Users create/manage their orgs.</li>
+                    <li>Administrative Control: Tools for admins to manage members, roles, settings.</li>
+                    <li>Secure Isolation: Prevent data leakage between orgs.</li>
+                    <li>Scalable Foundation: Accommodate growth without performance issues.</li>
+                </ul>
+                 <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">View Risks & Assumptions...</button>
+                 <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed">
+                    <p class="font-semibold mt-2">Risks:</p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Data leakage due to improper isolation.</li>
+                        <li>Performance bottlenecks from increased tenant load.</li>
+                        <li>Complexity in managing granular RBAC.</li>
+                        <li>Challenges in maintaining compliance.</li>
+                    </ul>
+                    <p class="font-semibold mt-2">Assumptions:</p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Stable underlying multi-tenancy architecture.</li>
+                        <li>Secure and scalable IAM solution integrated (e.g., Logto, Auth0).</li>
+                        <li>Adherence to security best practices.</li>
+                    </ul>
+                    <p class="mt-2">Early identification of these is crucial, especially for multi-tenancy specific risks like data leakage and performance degradation, to prevent costly architectural flaws later.</p>
+                 </div>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">2.2 Product Overview: Organization Lifecycle</h2>
+                <p class="text-slate-600 leading-relaxed mb-2">This outlines the user experience for the organization module, often visualized with sitemaps, screen flows, and wireframes.</p>
+                <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4">
+                    <li><strong>Create:</strong> New users creating their first org, or existing users creating additional orgs/workspaces.</li>
+                    <li><strong>Join:</strong> Users accepting invitations to existing orgs (new or existing accounts).</li>
+                    <li><strong>Manage:</strong> Admin dashboards for viewing org details, managing members (add, edit, remove), assigning roles, configuring settings.</li>
+                    <li><strong>Edit:</strong> Authorized users updating org attributes (name, branding, etc.), with careful management of customization to maintain core integrity.</li>
+                </ul>
+            </div>
+            
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">2.3 Detailed Functional Requirements</h2>
+                <p class="text-slate-600 leading-relaxed mb-4">These specify what the system must do. Click on each category to see detailed requirements.</p>
+                <div id="functional-requirements-grid" class="grid md:grid-cols-2 gap-4">
+                </div>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">2.4 Non-Functional Requirements</h2>
+                 <p class="text-slate-600 leading-relaxed mb-4">These define the quality attributes of the system. Click to expand.</p>
+                <div id="non-functional-requirements-list">
+                </div>
+            </div>
+            
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">2.5 Error Handling and Reporting</h2>
+                 <p class="text-slate-600 leading-relaxed mb-4">How the system handles and reports errors. Click to expand.</p>
+                <div id="error-handling-list">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 1: FSD Key Sections and Content</h3>
+                <div class="table-container">
+                    <table id="fsdTable">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Description</th>
+                                <th>Key Content Elements</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="mvp" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Minimum Viable Product (MVP)</h1>
+                <p class="text-lg text-slate-700 mb-6">The MVP is a version of the product with just enough features to attract early adopters and validate learning. This section defines the MVP for organization management, its core features, and the strategic justification for its scope.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3 text-sky-600">3.1 MVP Definition and Strategic Alignment</h2>
+                    <p class="text-slate-600 leading-relaxed mb-2">An MVP has minimal must-have features defining its core value. It's crucial for agile methodology, allowing iteration based on user input.</p>
+                    <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">Read more...</button>
+                    <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed">
+                       <p>The MVP scope aligns with business objectives like quick market release or testing ideas. Importantly, "viable" means it allows users to complete tasks with a good UX. It's a sellable product, not just a UI. For this module, core functions (create org, invite member) must be reliable. This ensures meaningful validated learning, not just frustration feedback.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3 text-sky-600">3.3 Justification for MVP Scope and Viability</h2>
+                    <p class="text-slate-600 leading-relaxed mb-2">The selected MVP scope offers:</p>
+                    <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4">
+                        <li><strong>Validated Learning:</strong> Early validation of core concepts and flows.</li>
+                        <li><strong>Market Feedback:</strong> Gather feedback from early adopters to guide future development.</li>
+                        <li><strong>Reduced Risk:</strong> Minimizes resources on potentially unwanted features.</li>
+                        <li><strong>Scalability Foundation:</strong> Lays a solid base for future enhancements.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="card mt-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">3.2 Core MVP Features</h2>
+                 <p class="text-slate-600 leading-relaxed mb-4">The MVP focuses on critical initial user pain points.</p>
+                <div id="mvp-features-list" class="space-y-3">
+                </div>
+            </div>
+            <div class="card mt-6">
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 2: MVP Core Features for Organization Management</h3>
+                <div class="table-container">
+                    <table id="mvpTable">
+                        <thead>
+                            <tr>
+                                <th>Feature Name</th>
+                                <th>Description</th>
+                                <th>Strategic Justification</th>
+                                <th>Corresponding FR ID(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="journeys" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Application Flow and User Journeys</h1>
+                <p class="text-lg text-slate-700 mb-6">This section details the step-by-step interactions for critical user journeys within the organization management module. Understanding these flows is key to grasping the user experience.</p>
+            </div>
+            
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">4.1 High-Level Application Flow</h2>
+                <p class="text-slate-600 leading-relaxed">A visual representation (e.g., UML Activity Diagram) would show primary user paths, including:</p>
+                <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4">
+                    <li>User Registration/Login</li>
+                    <li>Initial Organization Selection or Creation</li>
+                    <li>Navigation to Organization Dashboard</li>
+                    <li>Initiating Member Management Flows</li>
+                    <li>Accessing Organization Settings</li>
+                </ul>
+                <p class="mt-2 text-sm text-slate-500">Note: A dynamic diagram is not rendered here due to constraints, but the detailed journeys below illustrate these flows.</p>
+            </div>
+
+            <div id="user-journeys-content">
+                </div>
+        </section>
+
+        <section id="stories" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">User Stories and Feature Stories</h1>
+                <p class="text-lg text-slate-700 mb-6">User stories explain features from an end-user perspective ("As a [persona], I want to [action], so that [benefit]"). Feature stories (Epics) are larger work bodies, and technical stories cover foundational tasks. This section provides examples and their structure.</p>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">5.1 Understanding User Stories</h2>
+                <p class="text-slate-600 leading-relaxed mb-2">User stories are concise, informal explanations of a feature from the user's view. Format: "As a [persona], I want to [action/need], so that [purpose/benefit]."</p>
+                <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4">
+                    <li><strong>[persona]:</strong> Who the feature is for (role, habits, feelings).</li>
+                    <li><strong>[action/need]:</strong> User's intent or goal.</li>
+                    <li><strong>[purpose/benefit]:</strong> Overall value or problem solved.</li>
+                </ul>
+                <p class="text-slate-600 leading-relaxed mt-2">Benefits: Focus on user problems, foster collaboration, drive creative solutions, build momentum.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="story-filter" class="block text-sm font-medium text-slate-700 mb-1">Filter Stories by Type:</label>
+                <select id="story-filter" class="block w-full md:w-1/3 p-2 border border-slate-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                    <option value="all">All Stories</option>
+                    <option value="user">User Stories</option>
+                    <option value="epic">Feature Stories (Epics)</option>
+                    <option value="technical">Technical Stories</option>
+                </select>
+            </div>
+
+            <div id="stories-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+
+            <div class="card mt-8">
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 3: Example User Stories for Organization Management</h3>
+                <div class="table-container">
+                    <table id="userStoriesTable">
+                        <thead>
+                            <tr>
+                                <th>Persona</th>
+                                <th>Need (I want to...)</th>
+                                <th>Purpose (so that...)</th>
+                                <th>Brief Acceptance Criteria</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                 <p class="mt-4 text-sm text-slate-500">The distinction between user, feature (epic), and technical stories is key for agile development, ensuring customer value and managing technical debt.</p>
+            </div>
+        </section>
+
+        <section id="api" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">API Design and Routing Conventions</h1>
+                <p class="text-lg text-slate-700 mb-6">This section outlines the RESTful API design principles, proposed endpoints for organization resources, and the underlying data models. A well-designed API is crucial for scalability and maintainability.</p>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">6.1 RESTful API Design Principles</h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-600 leading-relaxed">
+                    <li><strong>Resources as Nouns:</strong> e.g., `/organizations`, not `/create-organization`. HTTP methods imply actions.</li>
+                    <li><strong>Plural Nouns for Collections:</strong> e.g., `/users`. Organizes URIs hierarchically.</li>
+                    <li><strong>Hierarchical URIs for Relationships:</strong> e.g., `/organizations/{id}/users`. Avoid overly deep hierarchies.</li>
+                    <li><strong>Avoid Chatty APIs:</strong> Minimize requests. Denormalize or combine data, balancing with fetch overhead.</li>
+                    <li><strong>Abstraction over Database Structure:</strong> API models business entities, not DB schema. Enhances security.</li>
+                    <li><strong>CamelCase for JSON Properties:</strong> e.g., `organizationName`.</li>
+                    <li><strong>`At` Suffix for Date/Time:</strong> e.g., `createdAt`. Use RFC 3339 format.</li>
+                </ul>
+                <p class="mt-3 text-sm text-slate-500">Adherence to these principles defines the critical contract, reduces friction, and improves developer experience.</p>
+            </div>
+
+            <div class="mb-6">
+                <input type="text" id="api-filter" placeholder="Filter API endpoints by path (e.g., /users, /roles)" class="block w-full md:w-2/3 p-2 border border-slate-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+            </div>
+            
+            <div id="api-endpoints-container">
+                </div>
+
+            <div class="card mt-8">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">6.3 Data Models for Organization Entities</h2>
+                <p class="text-slate-600 leading-relaxed mb-4">Core entities for organization management, supporting multi-tenancy and data isolation. The `tenantId` is critical.</p>
+                <div id="data-models-container" class="space-y-4">
+                    </div>
+                 <p class="mt-4 text-sm text-slate-500">The explicit `tenantId` is fundamental for data isolation strategies, enabling efficient queries and simplifying development.</p>
+            </div>
+             <div class="card mt-8">
+                <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 4: Organization Management API Endpoints Summary</h3>
+                <p class="text-slate-600 mb-2 text-sm">This table provides a quick overview. For full details, explore the interactive endpoint cards above.</p>
+                <div class="table-container">
+                    <table id="apiSummaryTable">
+                        <thead>
+                            <tr>
+                                <th>Route Path</th>
+                                <th>HTTP Method</th>
+                                <th>Description</th>
+                                <th>Required Role</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Key Architectural Considerations</h1>
+                <p class="text-lg text-slate-700 mb-6">This section delves into critical architectural aspects for multi-tenancy, including tenant isolation strategies, Identity and Access Management (IAM), and scalability/performance optimizations.</p>
+            </div>
+            
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">7.1 Tenant Isolation Strategies</h2>
+                <p class="text-slate-600 leading-relaxed mb-2">Tenant isolation is non-negotiable, crucial for preventing data leakage and ensuring privacy. "Isolation is not optional."</p>
+                <p class="text-slate-600 leading-relaxed mb-2"><strong>Recommended: Shared Database, Separate Schema (Schema-Level Isolation)</strong></p>
+                <ul class="list-disc list-inside text-slate-600 leading-relaxed ml-4 mb-2">
+                    <li>All tenants share a DB instance, each with a distinct schema (separate tables/objects).</li>
+                    <li><strong>Advantages:</strong> Excellent balance of isolation and resource use, better separation than shared tables, some schema-level customization, easier to scale than separate DBs. Most common balanced approach.</li>
+                    <li><strong>Disadvantages:</strong> Higher implementation/operational costs than "shared everything," careful schema management needed.</li>
+                </ul>
+                 <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">Explore Alternatives & Data Encryption...</button>
+                 <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed space-y-3">
+                    <div>
+                        <h4 class="font-semibold text-slate-600">Alternative/Hybrid Approaches:</h4>
+                        <ul class="list-disc list-inside ml-4">
+                            <li><strong>Shared Tables with Tenant ID:</strong> All tenants share tables, data differentiated by `tenantId` column. Simpler, faster development but lower isolation.</li>
+                            <li><strong>Separate Databases:</strong> Each tenant has a dedicated DB. Highest isolation and security, but high cost and complexity. Often for stringent compliance.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-600">Data Encryption:</h4>
+                        <ul class="list-disc list-inside ml-4">
+                            <li><strong>Encryption at Rest:</strong> Protects stored data (row-level or column-level).</li>
+                            <li><strong>Encryption in Transit:</strong> Secures data transmission (TLS/SSL).</li>
+                            <li>Key management is critical (tenant-specific vs. shared keys, HSMs).</li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h4 class="font-semibold text-slate-600">Resource Isolation (beyond data):</h4>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>VMs/Containers (Docker) for workload separation.</li>
+                            <li>VPNs/Micro-segmentation for network isolation.</li>
+                        </ul>
+                        <p class="mt-1">Isolation is a multi-layered approach. Schema-level isolation should be complemented by encryption and resource isolation for enterprise-grade multi-tenancy.</p>
+                    </div>
+                 </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold mb-3 text-sky-600">Comparison of Isolation Strategies</h3>
+                    <div class="chart-container">
+                        <canvas id="isolationStrategyChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-slate-500 mt-2">Qualitative scores (1=Low, 5=High) for illustration.</p>
+                </div>
+                <div class="mt-6">
+                     <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 5: Multi-Tenancy Data Isolation Strategies Comparison</h3>
+                     <div class="table-container">
+                        <table id="isolationStrategiesTable">
+                            <thead>
+                                <tr>
+                                    <th>Strategy Name</th>
+                                    <th>Description</th>
+                                    <th>Pros</th>
+                                    <th>Cons</th>
+                                    <th>Best Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-6">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">7.2 Identity and Access Management (IAM)</h2>
+                <p class="text-slate-600 leading-relaxed mb-2">IAM is fundamental for controlling access, protecting data, and ensuring security. Core components: authentication, authorization, audit.</p>
+                <div class="space-y-3">
+                    <div>
+                        <h4 class="font-semibold text-slate-700">Role-Based Access Control (RBAC)</h4>
+                        <p class="text-slate-600 text-sm">Simplifies access management by abstracting permissions into roles, enforcing Principle of Least Privilege (POLP).</p>
+                        <ul class="list-disc list-inside text-slate-600 text-sm ml-4">
+                            <li><strong>Roles:</strong> Collections of permissions (e.g., 'Admin', 'Member').</li>
+                            <li><strong>Permissions:</strong> Granular controls for specific actions on resources (e.g., `read:documents`).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-700">Authentication Mechanisms</h4>
+                        <ul class="list-disc list-inside text-slate-600 text-sm ml-4">
+                            <li><strong>Single Sign-On (SSO):</strong> Access multiple apps with one login.</li>
+                            <li><strong>Multi-Factor Authentication (MFA):</strong> Extra security layer.</li>
+                            <li><strong>Password Policies:</strong> Enforce complexity, prevent reuse.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-700">External IAM Provider Integration (e.g., Logto, Auth0)</h4>
+                        <p class="text-slate-600 text-sm">Simplifies development, enhances security by offloading concerns. Involves frontend getting tokens, backend validating, and M2M auth for management APIs.</p>
+                         <p class="mt-1 text-xs text-slate-500">Proper IAM (RBAC, external providers) is a scalability enabler, automating permission management and reducing admin overhead.</p>
+                    </div>
+                </div>
+                 <div class="mt-6">
+                     <h3 class="text-xl font-semibold mb-3 text-sky-600">Table 6: Example Roles and Permissions Matrix</h3>
+                     <div class="table-container">
+                        <table id="rolesPermissionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Role Name</th>
+                                    <th>Description</th>
+                                    <th>Permissions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">7.3 Scalability and Performance Optimizations</h2>
+                <p class="text-slate-600 leading-relaxed mb-2">Designing for scalability from the start minimizes future refactoring.</p>
+                <ul class="list-disc list-inside space-y-1 text-slate-600 leading-relaxed ml-4">
+                    <li><strong>Horizontal Scaling:</strong> Add app instances on-demand to distribute load.</li>
+                    <li><strong>Database Optimization:</strong>
+                        <ul class="list-circle list-inside ml-4 text-sm">
+                            <li>Indexing by `tenantId` (critical for performance).</li>
+                            <li>Archiving/Purge mechanisms for online data.</li>
+                            <li>Efficient query design.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Caching Strategies:</strong> Application-level, DB query caching, CDNs.</li>
+                    <li><strong>Load Balancing:</strong> Distribute traffic for high availability.</li>
+                    <li><strong>Monitoring and Metering:</strong> Track resource use, identify bottlenecks, manage billing.</li>
+                    <li><strong>Automate Provisioning/Deployment:</strong> IaC tools for reproducible setups, rapid onboarding.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="conclusion" class="content-section">
+            <div class="card">
+                <h1 class="text-3xl font-bold mb-4 text-sky-700">Conclusions and Recommendations</h1>
+                <p class="text-lg text-slate-700 mb-6">This blueprint provides a strategic guide for developing the organization management module. This final section summarizes the key conclusions and actionable recommendations for moving forward.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3 text-sky-600">Key Conclusions</h2>
+                    <ul class="list-disc list-inside space-y-2 text-slate-600 leading-relaxed">
+                        <li><strong>Foundational Importance:</strong> Org management is key for multi-tenancy, impacting security, admin overhead, and scalability.</li>
+                        <li><strong>Balanced Isolation:</strong> "Shared Database, Separate Schema" is recommended, complemented by layered security.</li>
+                        <li><strong>MVP Focus:</strong> Self-serve org creation and basic member management are vital for early validation. "Viable" is paramount.</li>
+                        <li><strong>API-First Approach:</strong> RESTful principles and clear `tenantId` use are critical for a maintainable interface.</li>
+                        <li><strong>IAM as Scalability Enabler:</strong> External IAM and RBAC reduce admin overhead and support growth.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3 text-sky-600">Actionable Recommendations & Next Steps</h2>
+                    <p class="text-slate-600 leading-relaxed mb-2"><strong>Phase 1 (MVP Implementation):</strong></p>
+                    <ul class="list-disc list-inside text-slate-600 text-sm leading-relaxed ml-4 mb-2">
+                        <li>Focus on core MVP features.</li>
+                        <li>Implement "Shared DB, Separate Schema" with `tenantId`.</li>
+                        <li>Integrate IAM (e.g., Logto), secure endpoints.</li>
+                        <li>Establish performance benchmarks, index by `tenantId`.</li>
+                    </ul>
+                     <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-sm">View Phase 2 & Continuous Improvement...</button>
+                     <div class="accordion-content mt-2 text-sm text-slate-500 leading-relaxed space-y-2">
+                        <div>
+                            <h4 class="font-semibold text-slate-600">Phase 2 (Post-MVP Iteration):</h4>
+                            <ul class="list-disc list-inside ml-4">
+                                <li>Advanced RBAC (custom roles, granular permissions, tiered access).</li>
+                                <li>Enhanced Org Customization (branding, notifications, integrations).</li>
+                                <li>Audit Trails for critical actions.</li>
+                                <li>Reporting and Analytics for org admins.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-600">Continuous Improvement:</h4>
+                            <ul class="list-disc list-inside ml-4">
+                                <li>User Feedback Loop: Formal mechanisms for collection and incorporation.</li>
+                                <li>Monitoring and Analytics: Real-time tracking of performance, security, resource use.</li>
+                                <li>Security Audits: Regular internal/external testing.</li>
+                                <li>Documentation: Keep FSD, API docs, user guides updated.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-6">
+                 <p class="text-center text-slate-600 leading-relaxed">By following this blueprint, the multi-tenant application can establish a secure, scalable, and user-centric organization management module, fostering sustainable growth.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 text-center p-4 mt-12">
+        <p>&copy; 2024 Interactive Blueprint Viewer. Content derived from Organization Management Report.</p>
+    </footer>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function setActiveSection(targetId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === targetId) {
+                    section.classList.add('active');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.target === targetId) {
+                    link.classList.add('active');
+                }
+            });
+            // Close mobile menu after navigation
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                mobileMenuButton.querySelector('svg.block').classList.remove('hidden');
+                mobileMenuButton.querySelector('svg.hidden').classList.add('hidden');
+            }
+            window.scrollTo(0, 0); // Scroll to top of page
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.dataset.target;
+                setActiveSection(targetId);
+            });
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.querySelector('svg.block').classList.toggle('hidden');
+            mobileMenuButton.querySelector('svg.hidden').classList.toggle('hidden');
+        });
+        
+        // Accordion functionality
+        document.querySelectorAll('.accordion-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const isOpening = content.style.display === 'none' || content.style.display === '';
+                content.style.display = isOpening ? 'block' : 'none';
+                button.textContent = isOpening ? 'Read less...' : 'Read more...';
+            });
+        });
+
+
+        // Data for tables and dynamic content
+        const fsdTableData = [
+            { section: "Project Scope", description: "Defines the boundaries, deliverables, and high-level goals of the organization management module.", elements: "Goals, deliverables, functions, tasks, budget, schedule." },
+            { section: "Risks and Assumptions", description: "Identifies potential variables and factors that could impact the functional design, along with underlying assumptions.", elements: "Data leakage risks, performance bottlenecks, RBAC complexity, compliance, IAM integration assumptions." },
+            { section: "Product Overview", description: "Describes how the module solves problems for the target audience, often using visual aids.", elements: "Sitemaps, screen flows, wireframes illustrating organization lifecycle (create, join, manage, edit)." },
+            { section: "Use Cases", description: "Provides context for functional requirements by detailing user actions and system responses.", elements: "User scenarios for creating, joining, inviting, managing members, editing organization profile." },
+            { section: "Requirements", description: "Core product features answering \"what does your product do?\", ensuring the final product meets user needs.", elements: "Detailed functional requirements (e.g., self-serve creation, member invitation, role management)." },
+            { section: "System Configuration", description: "Outlines steps required to configure the product for use, including security and preferences.", elements: "Defining login info, security options, user interface preferences for organizations." },
+            { section: "Non-functional Requirements", description: "Defines quality attributes not part of core functionality but crucial for overall quality and usability.", elements: "Scalability, security (data isolation, encryption), performance, compliance." },
+            { section: "Error Reporting", description: "Describes how the product handles errors, including messages and user options.", elements: "Clear, concise error messages, system logging, prevention of stack trace exposure." }
+        ];
+
+        const mvpTableData = [
+            { name: "Self-Serve Org Creation", description: "Authenticated users can create new organizations.", justification: "Validates core multi-tenancy concept & user onboarding.", frIds: "FR-ORG-001, FR-ORG-002" },
+            { name: "Basic Org Profile Mgmt.", description: "Admins can set/edit organization name.", justification: "Provides essential initial customization.", frIds: "FR-ORG-007 (scoped)" },
+            { name: "Member Invite/Remove", description: "Admins can invite users via email and remove members.", justification: "Enables core team collaboration & access control.", frIds: "FR-ORG-004, FR-ORG-005" },
+            { name: "Predefined Roles (Admin, Member)", description: "Basic RBAC with 'Admin' and 'Member' roles.", justification: "Establishes fundamental access control.", frIds: "FR-ORG-009 (scoped), FR-ORG-010" },
+            { name: "User Context Switching", description: "Users can switch between multiple organizations.", justification: "Enhances usability for multi-organization users.", frIds: "FR-ORG-006" },
+            { name: "API Protection", description: "All org-related API endpoints are authenticated/authorized.", justification: "Non-negotiable security foundation for viability.", frIds: "NFR (Security)" }
+        ];
+
+        const userStoriesTableData = [
+            { persona: "New User", need: "Create my first organization", purpose: "I can start using the application for my team's specific needs.", criteria: "Org created, I am admin, Org dashboard visible." },
+            { persona: "Invited User", need: "Easily join an existing organization through an invitation link", purpose: "I can quickly begin collaborating with my team members.", criteria: "Invitation accepted, I am a member, Org accessible." },
+            { persona: "Org Admin", need: "View all members in my organization", purpose: "I can keep track of who has access and manage our team effectively.", criteria: "List of members with roles displayed." },
+            { persona: "Org Admin", need: "Change a member's role within my organization", purpose: "I can adjust their permissions as their responsibilities evolve.", criteria: "Member's role updated, permissions applied." },
+            { persona: "Org Admin", need: "Remove a member from my organization", purpose: "I can securely manage access and deprovision users when necessary.", criteria: "Member removed, no longer has access." },
+            { persona: "Org Admin", need: "Edit my organization's name", purpose: "I can keep its profile up-to-date and accurately reflect our identity.", criteria: "Org name updated successfully." },
+            { persona: "Org Member", need: "See only features/data relevant to my role", purpose: "I am not overwhelmed by unnecessary information and my data remains secure.", criteria: "UI elements/data restricted based on role." },
+            { persona: "Multi-Org User", need: "Easily switch between my different organizational contexts", purpose: "I can efficiently access and work within the correct workspace at any given time.", criteria: "Context switcher visible, data changes on switch." }
+        ];
+        
+        const functionalRequirements = {
+            "Organization Creation and Onboarding": [
+                { id: "FR-ORG-001", title: "Self-Serve Organization Creation", description: "The system shall allow any authenticated user to initiate and complete the creation of a new organization. This process will involve capturing essential information such as the desired organization name. This is a cornerstone feature for modern SaaS applications, enabling rapid user onboarding and organic growth." },
+                { id: "FR-ORG-002", title: "Initial Administrator Assignment", description: "The user who successfully creates a new organization shall automatically be designated as the initial 'Admin' or 'Owner' of that organization. This ensures immediate administrative control." },
+                { id: "FR-ORG-003", title: "Unique Organization Identifier", description: "Upon creation, each organization shall be assigned a unique, immutable, and system-generated identifier (Tenant ID). This ID is fundamental for data segregation and tenant isolation." }
+            ],
+            "Organization Membership Management": [
+                { id: "FR-ORG-004", title: "Member Invitation", description: "Organization administrators shall possess the capability to invite new users to their organization via email. The invitation mechanism must generate a secure, time-limited invitation link and allow pre-assignment of an initial role." },
+                { id: "FR-ORG-005", title: "Member Management", description: "Organization administrators shall be able to view a list of all members, add new members (via invitation), modify existing members' roles, and remove members." },
+                { id: "FR-ORG-006", title: "Multi-Organization Membership", description: "The system shall support a model where a single user can be a member of, and seamlessly switch between, multiple distinct organizations." }
+            ],
+            "Organization Profile and Settings Management": [
+                { id: "FR-ORG-007", title: "Organization Detail Editing", description: "Organization administrators shall be able to modify core organization details (name, logo, contact info). Customization must be managed carefully to maintain application integrity." },
+                { id: "FR-ORG-008", title: "Organization-Specific Dashboard", description: "All members of an organization shall have access to a dashboard displaying information and quick actions specific to their current organization context." }
+            ],
+            "Role-Based Access Control (RBAC) within Organizations": [
+                { id: "FR-ORG-009", title: "Predefined Roles", description: "The system shall offer predefined roles (e.g., 'Admin', 'Member', 'Viewer') with clearly defined permissions (e.g., `organization:create`, `user:invite`)." },
+                { id: "FR-ORG-010", title: "Role Assignment", description: "Organization administrators shall be able to assign any of the predefined roles to members within their specific organization." },
+                { id: "FR-ORG-011", title: "Granular Permissions Enforcement", description: "Access to features, functionalities, and data shall be strictly controlled based on the user's assigned role and its granular permissions. RBAC simplifies permissions management." }
+            ]
+        };
+
+        const nonFunctionalRequirements = [
+            { title: "Scalability", description: "Design for horizontal scaling, support increasing database load, effective data purging, and vertical DB scaling. Proactive design minimizes refactoring." },
+            { title: "Security", description: "Robust data isolation, comprehensive encryption (at rest & in transit, row/column level for shared tables), strict access controls, regular user access reviews. 'Isolation is not optional.' Authentication/authorization alone are not isolation." },
+            { title: "Performance", description: "Maintain high performance under multi-tenant load. Efficient query design, caching, load balancing, dynamic resource allocation. Index by tenant ID for all multi-tenant tables." },
+            { title: "Data Isolation", description: "Recommended: 'Shared Database, Separate Schema'. Tenants share DB instance, each gets a distinct schema. Strong logical separation, balances resource efficiency." },
+            { title: "Compliance", description: "Adhere to applicable regulations for data protection and privacy. Requires investment in security tools and processes." }
+        ];
+        
+        const errorHandlingRequirements = [
+            { id: "ERR-001", title: "User-Friendly Error Feedback", description: "UI shall display clear, concise, actionable error messages to help users understand and resolve issues, minimizing frustration." },
+            { id: "ERR-002", title: "Comprehensive System Logging", description: "Implement robust logging for critical errors, security events, operational anomalies. Logs accessible for monitoring, debugging, analysis. Real-time alerts enable fast response." },
+            { id: "ERR-003", title: "Avoid Stack Trace Exposure", description: "API error responses must not expose internal stack traces, sensitive implementation details, or raw database errors to the client. Critical security measure." }
+        ];
+
+        const mvpFeatures = [
+            { title: "Self-Serve Organization Creation", description: "Allow any authenticated user to create a new organization and automatically become its initial administrator. Supports rapid onboarding." },
+            { title: "Basic Organization Profile Management", description: "Provide the ability for the organization administrator to set and edit the organization's name. Offers essential customization." },
+            { title: "Member Invitation and Removal", description: "Enable the organization administrator to invite new users via email and remove existing members. Fundamental for team collaboration." },
+            { title: "Predefined Essential Roles (Admin, Member)", description: "Implement basic RBAC with 'Admin' (full control) and 'Member' (standard access) roles. Necessary access granularity." },
+            { title: "User Context Switching", description: "For users in multiple organizations, provide an easy mechanism to switch contexts. Enhances usability." },
+            { title: "API Protection", description: "Ensure all organization-related API endpoints are rigorously protected by authentication and authorization. Non-negotiable security." }
+        ];
+
+        const userJourneysData = [
+            {
+                title: "4.2.1 Self-Serve Organization Creation Flow",
+                description: "This flow describes how an authenticated user creates a new organization, becoming its initial administrator.",
+                steps: [
+                    "<strong>User Action (Initiation):</strong> Authenticated user navigates to \"Create Organization\" page or initiates from dashboard.",
+                    "<strong>System Action (Frontend - Form Display):</strong> Frontend displays form for organization name.",
+                    "<strong>User Action (Submission):</strong> User enters name and submits.",
+                    "<strong>System Action (Frontend to Backend API Call):</strong> Frontend sends `POST /organizations` with name and auth token (e.g., Logto Access Token).",
+                    "<strong>System Action (Backend - API Protection & User ID Extraction):</strong> `requireAuth` middleware validates token, extracts user ID.",
+                    "<strong>System Action (Backend to Logto Management API - Create Organization):</strong> Backend calls Logto Management API `POST /api/organizations` to create org in IAM.",
+                    "<strong>System Action (Backend to Logto Management API - Add User):</strong> Backend calls Logto Management API `POST /api/organizations/{id}/users` to add creator as 'Admin'.",
+                    "<strong>System Action (Backend to Frontend Response):</strong> Backend sends success response to frontend.",
+                    "<strong>User Action (Redirection & Dashboard Update):</strong> Frontend redirects to new org's dashboard, reflecting admin access."
+                ],
+                note: "This flow highlights the backend's role as a secure orchestrator, abstracting direct frontend calls to the IAM provider's Management API, which is crucial for security."
+            },
+            {
+                title: "4.2.2 User Invitation and Onboarding Flow",
+                description: "How an org admin invites a new user, and how that user is onboarded.",
+                steps: [
+                    "<strong>Admin Action (Initiation):</strong> Org Admin navigates to \"Invite Member\".",
+                    "<strong>System Action (Frontend - Form Display):</strong> Form for invitee's email and initial role.",
+                    "<strong>Admin Action (Submission):</strong> Admin enters details and submits.",
+                    "<strong>System Action (Backend - Invitation Generation & Email):</strong> Backend generates unique token, stores it (with expiration), emails invitation link.",
+                    "<strong>Invited User Action (New Account - Registration):</strong> If new, user clicks link, registers; system links account to org.",
+                    "<strong>Invited User Action (Existing Account - Login):</strong> If existing, user clicks link, logs in; system processes invitation.",
+                    "<strong>System Action (Backend - Invitation Validation & Assignment):</strong> Backend validates token, associates user with org, assigns role.",
+                    "<strong>System Action (Frontend - Notification & Context Switch):</strong> Frontend notifies user, offers context switch if logged in."
+                ]
+            },
+            {
+                title: "4.2.3 Organization Member Management Flow",
+                description: "How an org admin manages existing members.",
+                steps: [
+                    "<strong>Admin Action (Initiation):</strong> Org Admin navigates to \"Members\" section.",
+                    "<strong>System Action (Frontend - Member List Display):</strong> Frontend displays list of members with roles.",
+                    "<strong>Admin Action (Selection):</strong> Admin selects member to edit role or remove.",
+                    "<strong>System Action (Frontend to Backend API Call):</strong> Frontend sends `PATCH /organizations/{id}/users/{userId}` (role update) or `DELETE /organizations/{id}/users/{userId}` (removal).",
+                    "<strong>System Action (Backend - Validation & Update):</strong> Backend validates admin permissions, updates user's role/membership in DB and syncs with IAM (e.g., Logto API).",
+                    "<strong>System Action (Frontend - UI Update):</strong> Frontend updates member list."
+                ]
+            }
+        ];
+        
+        const storiesData = [
+            { type: "user", persona: "new user", want: "create my first organization", soThat: "I can start using the application for my team's specific needs." },
+            { type: "user", persona: "existing user", want: "create an additional organization", soThat: "I can manage separate projects or client workspaces within the application." },
+            { type: "user", persona: "invited user", want: "easily join an existing organization through an invitation link", soThat: "I can quickly begin collaborating with my team members." },
+            { type: "user", persona: "organization administrator", want: "invite new members to my organization via email", soThat: "I can easily expand my team's access and collaboration within our workspace." },
+            { type: "user", persona: "organization administrator", want: "view a comprehensive list of all members in my organization", soThat: "I can keep track of who has access and manage our team effectively." },
+            { type: "user", persona: "organization administrator", want: "change a member's role within my organization", soThat: "I can adjust their permissions as their responsibilities evolve." },
+            { type: "user", persona: "organization administrator", want: "remove a member from my organization", soThat: "I can securely manage access and deprovision users when necessary." },
+            { type: "user", persona: "organization administrator", want: "edit my organization's name", soThat: "I can keep its profile up-to-date and accurately reflect our identity." },
+            { type: "user", persona: "organization member", want: "see only the features and data relevant to my assigned role", soThat: "I am not overwhelmed by unnecessary information and my data remains secure." },
+            { type: "user", persona: "user belonging to multiple organizations", want: "easily switch between my different organizational contexts", soThat: "I can efficiently access and work within the correct workspace at any given time." },
+            { type: "epic", title: "Self-Serve Organization Lifecycle Management", description: "Encompasses all user stories related to the complete lifecycle of an organization: creation, joining, basic administrative management, and deletion." },
+            { type: "epic", title: "Granular Role-Based Access Control for Organizations", description: "Covers all user stories and technical work for defining, assigning, and enforcing precise roles and permissions within organizations." },
+            { type: "technical", asA: "developer", want: "implement tenant ID filtering in all database queries", soThat: "strict data isolation is enforced between organizations." },
+            { type: "technical", asA: "database administrator", want: "create a table index by tenant ID for all multi-tenant tables", soThat: "query performance is optimized as the number of organizations grows." },
+            { type: "technical", asA: "developer", want: "integrate with the Logto Management API for organization creation and user assignment", soThat: "we leverage a robust, external IAM service for authentication and authorization." },
+            { type: "technical", asA: "developer", want: "implement row-level encryption for sensitive organization data within shared tables", soThat: "data security is enhanced even in a shared database environment." }
+        ];
+
+        const apiEndpointsData = [
+            { 
+                category: "/organizations (Collection Management)",
+                endpoints: [
+                    { method: "POST", path: "/organizations", description: "Creates a new organization. Authenticated user becomes 'Admin'.", requestExample: '{ "name": "My New Company Inc." }', responseExample: '{ "id": "org_uuid_123", "name": "My New Company Inc.", "ownerId": "user_uuid_456", "createdAt": "2024-07-20T10:00:00Z" } (201 Created)', purpose: "Facilitates self-serve organization creation." },
+                    { method: "GET", path: "/organizations", description: "Retrieves a list of organizations the current authenticated user belongs to. Paginated and filterable.", queryParams: "page, limit, sort, filter", responseExample: '[ { "id": "org_uuid_123", "name": "My New Company Inc.", "role": "admin" }, ... ] (200 OK)', purpose: "Allows users to see and select their organizational contexts." }
+                ]
+            },
+            {
+                category: "/organizations/{id} (Specific Organization Management)",
+                endpoints: [
+                    { method: "GET", path: "/organizations/{id}", description: "Retrieves detailed information for a specific organization. Requires membership.", pathParams: "id (UUID)", responseExample: '{ "id": "org_uuid_123", "name": "My New Company Inc.", ... } (200 OK)', purpose: "Allows members/admins to view organization profile." },
+                    { method: "PATCH", path: "/organizations/{id}", description: "Updates specific details of an organization (name, contact, etc.). Partial updates supported. Requires admin role.", pathParams: "id (UUID)", requestExample: '{ "name": "Updated Company Name LLC" }', responseExample: "Updated organization object (200 OK)", purpose: "Enables admins to manage organization profile." },
+                    { method: "DELETE", path: "/organizations/{id}", description: "Deletes a specific organization. Requires specific admin privileges, involves confirmation.", pathParams: "id (UUID)", responseExample: "204 No Content", purpose: "Mechanism for owners/super-admins to deprovision an organization." }
+                ]
+            },
+            {
+                category: "/organizations/{id}/users (Organization Membership)",
+                endpoints: [
+                    { method: "GET", path: "/organizations/{id}/users", description: "Retrieves a list of all users (members) of a specific organization, including ID, email, role.", pathParams: "id (UUID)", responseExample: '[ { "userId": "user_uuid_789", "email": "john.doe@example.com", "role": "admin" }, ... ] (200 OK)', purpose: "Allows admins to view/audit team membership." },
+                    { method: "POST", path: "/organizations/{id}/users", description: "Invites a new user to join the specified organization, with optional initial role.", pathParams: "id (UUID)", requestExample: '{ "email": "new.member@example.com", "role": "member" }', responseExample: '{ "invitationId": "inv_uuid_345", "status": "pending" } (201 Created)', purpose: "Facilitates member invitation and onboarding." },
+                    { method: "PATCH", path: "/organizations/{id}/users/{userId}", description: "Updates a specific user's role within the organization.", pathParams: "id (UUID, org), userId (UUID, user)", requestExample: '{ "role": "viewer" }', responseExample: "Updated user-organization membership object (200 OK)", purpose: "Enables admins to manage member permissions." },
+                    { method: "DELETE", path: "/organizations/{id}/users/{userId}", description: "Removes a user from the specified organization.", pathParams: "id (UUID, org), userId (UUID, user)", responseExample: "204 No Content", purpose: "Allows admins to deprovision users." }
+                ]
+            },
+            {
+                category: "/organizations/{id}/roles (Organization Roles and Permissions)",
+                endpoints: [
+                    { method: "GET", path: "/organizations/{id}/roles", description: "Retrieves predefined roles (Admin, Member, Viewer) and their associated permissions available within an organization.", pathParams: "id (UUID)", responseExample: '[ { "name": "Admin", "permissions": ["organization:read", ...] }, ... ] (200 OK)', purpose: "Informs admins about available roles and capabilities." }
+                ]
+            }
+        ];
+        
+        const dataModelsData = [
+            { 
+                name: "Organization Entity", 
+                description: "Represents a single tenant or customer organization.",
+                fields: [
+                    { name: "id", type: "UUID", details: "Primary Key, unique identifier for the organization." },
+                    { name: "tenantId", type: "UUID", details: "Unique, system-generated identifier for data isolation (often synonymous with `id` in schema-per-tenant)." },
+                    { name: "name", type: "String", details: "Human-readable name of the organization." },
+                    { name: "ownerId", type: "UUID", details: "Foreign Key to User entity, identifying the initial creator/owner." },
+                    { name: "createdAt", type: "DateTime", details: "Timestamp of creation (RFC 3339)." },
+                    { name: "updatedAt", type: "DateTime", details: "Timestamp of last update (RFC 3339)." }
+                ]
+            },
+            {
+                name: "UserOrganization (Join Table)",
+                description: "Links users to organizations and defines their role within each (Many-to-Many relationship).",
+                fields: [
+                    { name: "userId", type: "UUID", details: "Foreign Key to User entity." },
+                    { name: "organizationId", type: "UUID", details: "Foreign Key to Organization entity." },
+                    { name: "role", type: "String", details: "e.g., 'admin', 'member', 'viewer' – maps to predefined roles." },
+                    { name: "joinedAt", type: "DateTime", details: "Timestamp when user joined this organization." }
+                ]
+            },
+            {
+                name: "Role Entity (Predefined)",
+                description: "Defines available roles and their associated permissions across the application.",
+                fields: [
+                    { name: "id", type: "UUID", details: "Primary Key, unique identifier for the role." },
+                    { name: "name", type: "String", details: "e.g., 'Admin', 'Member'." },
+                    { name: "description", type: "String", details: "Human-readable explanation of the role's purpose." },
+                    { name: "permissions", type: "Array of Strings", details: "List of granular permissions, e.g., `[\"organization:read\", \"user:manage\"]`." }
+                ]
+            }
+        ];
+
+        const apiSummaryTableData = [
+            { path: "/organizations", method: "POST", description: "Creates a new organization.", role: "Authenticated User" },
+            { path: "/organizations", method: "GET", description: "Lists organizations current user belongs to.", role: "Authenticated User" },
+            { path: "/organizations/{id}", method: "GET", description: "Retrieves details of a specific organization.", role: "Org Member" },
+            { path: "/organizations/{id}", method: "PATCH", description: "Updates organization details.", role: "Org Admin" },
+            { path: "/organizations/{id}", method: "DELETE", description: "Deletes an organization.", role: "Org Admin (Owner)" },
+            { path: "/organizations/{id}/users", method: "GET", description: "Lists users in an organization.", role: "Org Member" },
+            { path: "/organizations/{id}/users", method: "POST", description: "Invites a user to an organization.", role: "Org Admin" },
+            { path: "/organizations/{id}/users/{userId}", method: "PATCH", description: "Updates a user's role in an organization.", role: "Org Admin" },
+            { path: "/organizations/{id}/users/{userId}", method: "DELETE", description: "Removes a user from an organization.", role: "Org Admin" },
+            { path: "/organizations/{id}/roles", method: "GET", description: "Lists predefined roles and permissions for an organization.", role: "Org Member" }
+        ];
+
+        const isolationStrategiesTableData = [
+            { name: "Shared Database, Shared Schema (Table-Level)", description: "All tenants share same database and tables, differentiated by `tenantId` column.", pros: "Simplest, lowest resource use, fastest development.", cons: "Lowest isolation, highest risk of data leakage, limited customization.", useCase: "Small SaaS, low security needs, rapid prototyping." },
+            { name: "Shared Database, Separate Schema (Schema-Level)", description: "Tenants share same database, each has a separate schema.", pros: "Good balance of isolation & efficiency, better customization.", cons: "Higher management overhead than shared tables.", useCase: "Most common SaaS, balanced security/cost needs." },
+            { name: "Separate Databases (Database-Level)", description: "Each tenant has its own dedicated database.", pros: "Highest isolation & security, easiest for compliance.", cons: "Highest cost, significant management overhead, slower development.", useCase: "High compliance industries (e.g., healthcare, finance)." },
+            { name: "Dedicated Instance Model", description: "Each tenant has their own separate application instance and database.", pros: "Maximum isolation, simplest to implement per tenant.", cons: "Highest operational costs, complex maintenance for many tenants.", useCase: "Very large enterprises, extreme isolation needs." }
+        ];
+        
+        const rolesPermissionsTableData = [
+            { name: "Organization Admin", description: "Full administrative control over an organization and its members.", permissions: "`organization:read`, `organization:update`, `organization:delete`, `user:invite`, `user:manage`, `document:create`, `document:read`, `document:update`, `document:delete`, `settings:manage`" },
+            { name: "Organization Member", description: "Standard user access for creating and managing documents within the organization.", permissions: "`document:create`, `document:read`, `document:update`, `document:delete`" },
+            { name: "Organization Viewer", description: "Read-only access to documents and organization information.", permissions: "`organization:read`, `document:read`" }
+        ];
+
+
+        function populateTable(tableId, data, columns) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            if (!tableBody) return;
+            tableBody.innerHTML = ''; // Clear existing rows
+            data.forEach(rowData => {
+                const row = tableBody.insertRow();
+                columns.forEach(column => {
+                    const cell = row.insertCell();
+                    cell.innerHTML = DOMPurify.sanitize(rowData[column.key] || '');
+                    if (column.class) {
+                        cell.classList.add(...column.class.split(' '));
+                    }
+                });
+            });
+        }
+        
+        function createCard(item, type) {
+            const card = document.createElement('div');
+            card.className = 'card story-card';
+            card.dataset.storyType = type;
+
+            let content = '';
+            if (type === 'user') {
+                content = `<div class="card-header"><span class="tag tag-user-story">User Story</span> As a ${item.persona}</div>
+                           <p class="text-slate-700">I want to <strong>${item.want}</strong></p>
+                           <p class="text-slate-600 text-sm">so that ${item.soThat}.</p>`;
+            } else if (type === 'epic') {
+                content = `<div class="card-header"><span class="tag tag-epic">Epic</span> ${item.title}</div>
+                           <p class="text-slate-600 text-sm">${item.description}</p>`;
+            } else if (type === 'technical') {
+                 content = `<div class="card-header"><span class="tag tag-technical-story">Technical Story</span> As a ${item.asA}</div>
+                           <p class="text-slate-700">I want to <strong>${item.want}</strong></p>
+                           <p class="text-slate-600 text-sm">so that ${item.soThat}.</p>`;
+            }
+            card.innerHTML = DOMPurify.sanitize(content);
+            return card;
+        }
+        
+        function populateStories() {
+            const container = document.getElementById('stories-container');
+            container.innerHTML = '';
+            storiesData.forEach(story => {
+                if (story.type === 'user' || story.type === 'epic' || story.type === 'technical') {
+                    container.appendChild(createCard(story, story.type));
+                }
+            });
+        }
+
+        function filterStories() {
+            const filterValue = document.getElementById('story-filter').value;
+            const cards = document.querySelectorAll('.story-card');
+            cards.forEach(card => {
+                if (filterValue === 'all' || card.dataset.storyType === filterValue) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        document.getElementById('story-filter')?.addEventListener('change', filterStories);
+
+
+        function populateFunctionalRequirements() {
+            const container = document.getElementById('functional-requirements-grid');
+            if (!container) return;
+            container.innerHTML = '';
+            for (const category in functionalRequirements) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'card';
+                let reqHtml = `<h3 class="text-lg font-semibold text-sky-600 mb-2">${category}</h3>`;
+                functionalRequirements[category].forEach(req => {
+                    reqHtml += `
+                        <div class="mb-3 pb-3 border-b border-slate-200 last:border-b-0">
+                            <button class="accordion-toggle w-full text-left font-medium text-slate-700 hover:text-sky-700 flex justify-between items-center">
+                                <span>${req.id}: ${req.title}</span>
+                                <svg class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content mt-1 text-sm text-slate-600 leading-relaxed">
+                                ${req.description}
+                            </div>
+                        </div>
+                    `;
+                });
+                categoryDiv.innerHTML = DOMPurify.sanitize(reqHtml);
+                container.appendChild(categoryDiv);
+            }
+            addAccordionListenersToContainer(container);
+        }
+        
+        function populateList(containerId, data, itemRenderer) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            data.forEach(item => {
+                const itemDiv = itemRenderer(item);
+                container.appendChild(itemDiv);
+            });
+            addAccordionListenersToContainer(container);
+        }
+
+        function createRequirementListItem(item) {
+            const div = document.createElement('div');
+            div.className = 'card mb-3';
+            div.innerHTML = DOMPurify.sanitize(`
+                <button class="accordion-toggle w-full text-left font-semibold text-slate-700 hover:text-sky-700 flex justify-between items-center">
+                    <span>${item.id ? item.id + ': ' : ''}${item.title}</span>
+                     <svg class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content mt-1 text-sm text-slate-600 leading-relaxed">
+                    ${item.description}
+                </div>
+            `);
+            return div;
+        }
+         function createMvpFeatureItem(item) {
+            const div = document.createElement('div');
+            div.className = 'p-3 border border-slate-200 rounded-md bg-white';
+            div.innerHTML = DOMPurify.sanitize(`
+                <h4 class="font-semibold text-slate-700">${item.title}</h4>
+                <p class="text-sm text-slate-600">${item.description}</p>
+            `);
+            return div;
+        }
+
+        function addAccordionListenersToContainer(container) {
+            container.querySelectorAll('.accordion-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('svg');
+                    const isOpening = content.style.display === 'none' || content.style.display === '';
+                    content.style.display = isOpening ? 'block' : 'none';
+                    if (icon) {
+                        icon.style.transform = isOpening ? 'rotate(180deg)' : 'rotate(0deg)';
+                    }
+                });
+            });
+        }
+        
+        function populateUserJourneys() {
+            const container = document.getElementById('user-journeys-content');
+            if (!container) return;
+            container.innerHTML = '';
+            userJourneysData.forEach(journey => {
+                const journeyCard = document.createElement('div');
+                journeyCard.className = 'card mb-8';
+                
+                let stepsHtml = '<ol class="space-y-4 mt-4">';
+                journey.steps.forEach((step, index) => {
+                    stepsHtml += `<li class="journey-step text-sm text-slate-600 leading-relaxed">${step}</li>`;
+                });
+                stepsHtml += '</ol>';
+                
+                journeyCard.innerHTML = DOMPurify.sanitize(`
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">${journey.title}</h3>
+                    <p class="text-slate-700 mb-3">${journey.description}</p>
+                    ${stepsHtml}
+                    ${journey.note ? `<p class="mt-4 text-xs text-slate-500 italic">${journey.note}</p>` : ''}
+                `);
+                container.appendChild(journeyCard);
+            });
+        }
+        
+        function populateApiEndpoints() {
+            const container = document.getElementById('api-endpoints-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            apiEndpointsData.forEach(categoryData => {
+                const categoryTitle = document.createElement('h3');
+                categoryTitle.className = 'text-2xl font-semibold text-sky-700 mt-8 mb-4';
+                categoryTitle.textContent = categoryData.category;
+                container.appendChild(categoryTitle);
+
+                const grid = document.createElement('div');
+                grid.className = 'grid md:grid-cols-1 lg:grid-cols-2 gap-6 api-category';
+                grid.dataset.categoryName = categoryData.category.toLowerCase();
+
+                categoryData.endpoints.forEach(endpoint => {
+                    const card = document.createElement('div');
+                    card.className = 'card api-endpoint-card';
+                    card.dataset.path = endpoint.path.toLowerCase();
+                    
+                    let detailsHtml = `
+                        <div class="flex items-center mb-2">
+                            <span class="api-method-${endpoint.method} px-2 py-1 rounded-md text-xs font-semibold mr-2">${endpoint.method}</span>
+                            <code class="text-sm font-mono bg-slate-100 p-1 rounded text-slate-700">${endpoint.path}</code>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-2">${endpoint.description}</p>
+                        <button class="accordion-toggle text-sky-600 hover:text-sky-800 font-medium text-xs flex items-center">
+                            Show Details 
+                            <svg class="w-3 h-3 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content mt-2 text-xs space-y-1">
+                    `;
+                    if(endpoint.pathParams) detailsHtml += `<p><strong>Path Params:</strong> ${endpoint.pathParams}</p>`;
+                    if(endpoint.queryParams) detailsHtml += `<p><strong>Query Params:</strong> ${endpoint.queryParams}</p>`;
+                    if(endpoint.requestExample) detailsHtml += `<p><strong>Request Example:</strong> <pre class="bg-slate-100 p-1 rounded overflow-x-auto">${endpoint.requestExample}</pre></p>`;
+                    if(endpoint.responseExample) detailsHtml += `<p><strong>Response Example:</strong> <pre class="bg-slate-100 p-1 rounded overflow-x-auto">${endpoint.responseExample}</pre></p>`;
+                    if(endpoint.purpose) detailsHtml += `<p><strong>Purpose:</strong> ${endpoint.purpose}</p>`;
+                    detailsHtml += `</div>`;
+                    
+                    card.innerHTML = DOMPurify.sanitize(detailsHtml);
+                    grid.appendChild(card);
+                });
+                container.appendChild(grid);
+            });
+            addAccordionListenersToContainer(container);
+        }
+
+        function filterApiEndpoints() {
+            const filterText = document.getElementById('api-filter').value.toLowerCase();
+            document.querySelectorAll('.api-endpoint-card').forEach(card => {
+                const path = card.dataset.path;
+                if (path.includes(filterText)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        document.getElementById('api-filter')?.addEventListener('input', filterApiEndpoints);
+
+        function populateDataModels() {
+            const container = document.getElementById('data-models-container');
+            if (!container) return;
+            container.innerHTML = '';
+            dataModelsData.forEach(model => {
+                const modelDiv = document.createElement('div');
+                modelDiv.className = 'card';
+                let fieldsHtml = '<ul class="list-disc list-inside space-y-1 text-sm text-slate-600 ml-4">';
+                model.fields.forEach(field => {
+                    fieldsHtml += `<li><strong>${field.name}</strong> (${field.type}): ${field.details}</li>`;
+                });
+                fieldsHtml += '</ul>';
+                modelDiv.innerHTML = DOMPurify.sanitize(`
+                    <h4 class="text-lg font-semibold text-slate-800 mb-1">${model.name}</h4>
+                    <p class="text-sm text-slate-700 mb-2">${model.description}</p>
+                    ${fieldsHtml}
+                `);
+                container.appendChild(modelDiv);
+            });
+        }
+
+
+        // Chart.js for Isolation Strategies
+        function renderIsolationChart() {
+            const ctx = document.getElementById('isolationStrategyChart')?.getContext('2d');
+            if (!ctx) return;
+            // Qualitative mapping to scores (1=Low, 3=Medium, 5=High)
+            const chartData = {
+                labels: [
+                    "Shared DB, Shared Schema (Table-Level)", 
+                    "Shared DB, Separate Schema (Schema-Level)", 
+                    "Separate Databases (Database-Level)", 
+                    "Dedicated Instance Model"
+                ],
+                datasets: [
+                    {
+                        label: 'Isolation Level',
+                        data: [1, 3, 5, 5], // Low, Medium, High, High
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)', // sky-500
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Cost/Complexity',
+                        data: [1, 3, 5, 5], // Low, Medium, High, High
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)', // red-400
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5.5, // A bit above max score for padding
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (value === 1) return 'Low';
+                                    if (value === 3) return 'Medium';
+                                    if (value === 5) return 'High';
+                                    return null; // Hide other ticks
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Tenant Isolation Strategies: Isolation vs. Cost/Complexity'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.parsed.y <= 1) label += 'Low';
+                                        else if (context.parsed.y <=3) label += 'Medium';
+                                        else label += 'High';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                }
+            });
+        }
+
+
+        // Initial population of dynamic content
+        window.addEventListener('DOMContentLoaded', () => {
+            populateTable('fsdTable', fsdTableData, [
+                { key: 'section', class: 'font-semibold text-slate-700' }, { key: 'description' }, { key: 'elements' }
+            ]);
+            populateTable('mvpTable', mvpTableData, [
+                { key: 'name', class: 'font-semibold text-slate-700' }, { key: 'description' }, { key: 'justification' }, { key: 'frIds' }
+            ]);
+            populateTable('userStoriesTable', userStoriesTableData, [
+                { key: 'persona', class: 'font-semibold' }, { key: 'need' }, { key: 'purpose' }, { key: 'criteria' }
+            ]);
+            populateTable('apiSummaryTable', apiSummaryTableData, [
+                { key: 'path', class: 'font-mono text-sm' }, { key: 'method' }, { key: 'description' }, { key: 'role' }
+            ]);
+            populateTable('isolationStrategiesTable', isolationStrategiesTableData, [
+                { key: 'name', class: 'font-semibold' }, { key: 'description' }, { key: 'pros' }, { key: 'cons' }, { key: 'useCase' }
+            ]);
+            populateTable('rolesPermissionsTable', rolesPermissionsTableData, [
+                { key: 'name', class: 'font-semibold' }, { key: 'description' }, { key: 'permissions', class: 'text-xs break-all' }
+            ]);
+            
+            populateFunctionalRequirements();
+            populateList('non-functional-requirements-list', nonFunctionalRequirements, createRequirementListItem);
+            populateList('error-handling-list', errorHandlingRequirements, createRequirementListItem);
+            populateList('mvp-features-list', mvpFeatures, createMvpFeatureItem);
+            populateUserJourneys();
+            populateStories();
+            filterStories(); // Initial filter application
+            populateApiEndpoints();
+            filterApiEndpoints(); // Initial filter
+            populateDataModels();
+            renderIsolationChart();
+
+            setActiveSection('home'); // Set initial active section
+        });
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js"></script>
+
+</body>
+</html>

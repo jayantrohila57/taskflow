@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "locale-not-found-page",
+  "type": "registry:page",
+  "title": "Locale Not Found Page",
+  "description": "The not found page for the locale route.",
+  "files": [
+    {
+      "path": "src/app/[locale]/not-found.tsx",
+      "content": "import Footer from \"@/components/shared/layout/footer\";\nimport Header from \"@/components/shared/layout/header\";\nimport NotFoundComponent from \"@/components/shared/pages/not-found\";\nimport BgGridPattern from \"@/components/shared/shell/bg-grid-pattern\";\nimport Shell from \"@/components/shared/shell/shell\";\nimport { getLocale } from \"next-intl/server\";\n\nexport default async function NotFound() {\n  const locale = await getLocale();\n  return (\n    <Shell>\n      <Shell.Header>\n        <Header locale={locale} />\n      </Shell.Header>\n      <Shell.Main variant={\"centered\"} padding=\"none\">\n        <Shell.Section variant=\"center\">\n          <NotFoundComponent />\n        </Shell.Section>\n        <BgGridPattern />\n      </Shell.Main>\n      <Shell.Footer>\n        <Footer locale={locale} />\n      </Shell.Footer>\n    </Shell>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/not-found.tsx"
+    }
+  ]
+}

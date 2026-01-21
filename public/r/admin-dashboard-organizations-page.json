@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-organizations-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Organizations Page",
+  "description": "The organizations page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/page.tsx",
+      "content": "import { getTranslations } from \"next-intl/server\";\n\nimport GoBackButton from \"@/components/shared/dashboard/go-back\";\nimport ShareButton from \"@/components/shared/layout/share-button\";\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\";\nimport { Separator } from \"@/components/ui/separator\";\nimport { Tabs, TabsContent } from \"@/components/ui/tabs\";\nimport { DataTable } from \"@/modules/organization/components/table/data-table\";\nimport { columns } from \"@/modules/organization/components/table/data-table-column\";\n// import { api } from '@/packages/trpc/server'\n\nexport default async function OrganizationPageComponent() {\n  // const { data } = await api.organization.get({})\n  const t = await getTranslations();\n\n  return (\n    <Tabs defaultValue=\"1\">\n      <div className=\"grid h-full w-full grid-cols-12 gap-2\">\n        <Card className=\"col-span-9 h-[89.5vh] overflow-hidden overflow-y-scroll rounded-xl text-wrap break-all\">\n          <CardHeader className=\"flex flex-row items-center justify-between\">\n            <div className=\"flex h-full w-full flex-row items-center justify-end gap-4\">\n              <GoBackButton />\n              <div className=\"h-full w-full\">\n                <CardTitle>{t(\"ORGANIZATION.ORGANIZATION_NAME\")}</CardTitle>\n                <CardDescription>\n                  {t(\"ORGANIZATION.CREATE_ORGANIZATION_DESCRIPTION\")}\n                </CardDescription>\n              </div>\n            </div>\n            <div className=\"flex h-full w-full flex-row items-center justify-end gap-4\">\n              <ShareButton />\n            </div>\n          </CardHeader>\n          <Separator />\n          <CardContent>\n            <TabsContent className=\"h-fit w-full\" value=\"1\">\n              <DataTable data={[]} columns={columns} />\n            </TabsContent>\n          </CardContent>\n        </Card>\n        <div className=\"col-span-3 h-full w-full\">\n          <Card className=\"h-[89.5vh] overflow-hidden overflow-y-scroll rounded-xl text-wrap break-all\"></Card>\n        </div>\n      </div>\n    </Tabs>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/page.tsx"
+    }
+  ]
+}

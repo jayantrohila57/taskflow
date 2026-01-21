@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "panel-support-layout",
+  "type": "registry:page",
+  "title": "Panel Support Layout",
+  "description": "The support layout for the panel.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(panel)/panel/support/layout.tsx",
+      "content": "import type React from \"react\";\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n  return children;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(panel)/panel/support/layout.tsx"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "account-preference-page",
+  "type": "registry:page",
+  "title": "Account Preference Page",
+  "description": "The preference page for the account route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(account)/account/preference/page.tsx",
+      "content": "import { Card, CardContent, CardHeader, CardTitle } from \"@/components/ui/card\";\n\nimport React from \"react\";\n\nimport Shell from \"@/components/shared/shell/shell\";\nimport AccountPageLayout from \"@/modules/account/components/sidebar/account.layout\";\nimport AccountTabs from \"@/modules/account/components/account.tabs\";\n\ninterface LayoutProps {\n  params: Promise<{ locale: string }>;\n}\n\nexport default async function AccountPage({ params }: LayoutProps) {\n  const { locale } = await params;\n  return (\n    <Shell>\n      <Shell.Section variant={\"dashboard\"} scale=\"full\">\n        <AccountPageLayout\n          title=\"Account\"\n          description=\"Manage your account settings and preferences.\"\n        >\n          <AccountTabs>\n            <Card>\n              <CardHeader>\n                <CardTitle>{\"Account Information\"}</CardTitle>\n              </CardHeader>\n              <CardContent className=\"space-y-4\"></CardContent>\n            </Card>\n          </AccountTabs>\n        </AccountPageLayout>\n      </Shell.Section>\n    </Shell>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(account)/account/preference/page.tsx"
+    }
+  ]
+}

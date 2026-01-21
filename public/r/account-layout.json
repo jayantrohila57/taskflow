@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "account-layout",
+  "type": "registry:page",
+  "title": "Account Layout",
+  "description": "The layout for the account route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(account)/layout.tsx",
+      "content": "import React from \"react\";\n\nimport Shell from \"@/components/shared/shell/shell\";\nimport { Breadcrumbs } from \"@/components/shared/dashboard/breadcrumbs\";\nimport GlobalSearch from \"@/components/shared/global-search/global-search\";\nimport { HeaderActions } from \"@/components/shared/layout/header.actions\";\nimport { Separator } from \"@/components/ui/separator\";\nimport {\n  SidebarInset,\n  SidebarProvider,\n  SidebarTrigger,\n} from \"@/components/ui/sidebar\";\nimport SignoutWithGithub from \"@/modules/auth/components/sign-out/auth.signout\";\nimport BgGridPattern from \"@/components/shared/shell/bg-grid-pattern\";\nimport { AccountSidebar } from \"@/modules/account/components/sidebar/account.sidebar\";\n\ninterface OrganizationLayoutProps {\n  children: React.ReactNode;\n  params: Promise<{ locale: string }>;\n}\n\nexport default async function OrganizationLayout({\n  children,\n  params,\n}: OrganizationLayoutProps) {\n  const { locale } = await params;\n  return (\n    <Shell>\n      <SidebarProvider>\n        <AccountSidebar />\n        <SidebarInset>\n          <div className=\"sticky top-0 flex h-16 shrink-0 items-center gap-2\">\n            <div className=\"flex w-full items-center justify-between gap-2 px-4\">\n              <div className=\"flex w-full flex-row items-center justify-start gap-2\">\n                <SidebarTrigger className=\"-ml-1\" />\n                <Separator orientation=\"vertical\" className=\"mr-2 h-4\" />\n                <Breadcrumbs />\n              </div>\n              <div className=\"flex w-full flex-row items-center justify-end gap-4\">\n                <GlobalSearch />\n                <HeaderActions />\n                <SignoutWithGithub />\n              </div>\n            </div>\n          </div>\n          <Shell.Main variant=\"dashboard\" padding=\"none\" scale={\"dashboard\"}>\n            {children}\n            <BgGridPattern />\n          </Shell.Main>\n        </SidebarInset>\n      </SidebarProvider>\n    </Shell>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(account)/layout.tsx"
+    }
+  ]
+}

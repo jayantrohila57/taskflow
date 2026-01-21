@@ -1,0 +1,146 @@
+model Status {
+    id          String    @id @default(cuid()) @map("id")
+    code        String    @unique @map("code")
+    slug        String    @unique @map("slug")
+    title       String?   @map("title")
+    description String?   @map("description")
+    image       String?   @map("image")
+    color       String?   @map("color")
+    icon        String?   @map("icon")
+    isDefault   Boolean   @default(false) @map("is_default")
+    isActive    Boolean   @default(true) @map("is_active")
+    sortOrder   Int       @default(0) @map("sort_order")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    organizationId String?        @map("organization_id")
+    Organization   Organization[]
+
+    @@index([code])
+    @@index([isActive])
+    @@index([organizationId])
+    @@map("statuses")
+}
+
+model Type {
+    id          String    @id @default(cuid()) @map("id")
+    code        String    @unique @map("code")
+    slug        String    @unique @map("slug")
+    title       String?   @map("title")
+    description String?   @map("description")
+    image       String?   @map("image")
+    color       String?   @map("color")
+    icon        String?   @map("icon")
+    isDefault   Boolean   @default(false) @map("is_default")
+    isActive    Boolean   @default(true) @map("is_active")
+    sortOrder   Int       @default(0) @map("sort_order")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    organizationId            String?                   @map("organization_id")
+    Organization              Organization[]
+    OrganizationAddressLinkId String?                   @map("organizationAddressLink_id")
+    OrganizationAddressLink   OrganizationAddressLink[]
+
+    @@index([code])
+    @@index([isActive])
+    @@index([organizationId])
+    @@map("types")
+}
+
+model Category {
+    id          String    @id @default(cuid()) @map("id")
+    code        String    @unique @map("code")
+    slug        String    @unique @map("slug")
+    title       String?   @map("title")
+    description String?   @map("description")
+    image       String?   @map("image")
+    color       String?   @map("color")
+    icon        String?   @map("icon")
+    isDefault   Boolean   @default(false) @map("is_default")
+    isActive    Boolean   @default(true) @map("is_active")
+    sortOrder   Int       @default(0) @map("sort_order")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    organizationId String?        @map("organization_id")
+    Organization   Organization[]
+
+    @@index([code])
+    @@index([isActive])
+    @@index([organizationId])
+    @@map("categories")
+}
+
+model Priority {
+    id          String    @id @default(cuid()) @map("id")
+    code        String    @unique @map("code")
+    slug        String    @unique @map("slug")
+    title       String?   @map("title")
+    description String?   @map("description")
+    image       String?   @map("image")
+    color       String?   @map("color")
+    icon        String?   @map("icon")
+    isDefault   Boolean   @default(false) @map("is_default")
+    isActive    Boolean   @default(true) @map("is_active")
+    sortOrder   Int       @default(0) @map("sort_order")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    @@index([code])
+    @@index([isActive])
+    @@map("priorities")
+}
+
+model Tag {
+    id          String    @id @default(cuid()) @map("id")
+    code        String    @unique @map("code")
+    slug        String    @unique @map("slug")
+    title       String?   @map("title")
+    description String?   @map("description")
+    image       String?   @map("image")
+    color       String?   @map("color")
+    isDefault   Boolean   @default(false) @map("is_default")
+    isActive    Boolean   @default(true) @map("is_active")
+    sortOrder   Int       @default(0) @map("sort_order")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    organizationId String?        @map("organization_id")
+
+    @@index([code])
+    @@index([isActive])
+    @@index([organizationId])
+    @@map("tags")
+}
+
+model FeatureFlag {
+    id                String   @id @default(cuid())
+    featureName       String   @unique @map("feature_name")
+    featureKey        String   @unique @map("feature_key")
+    slug              String   @unique @map("slug")
+    title             String?  @map("title")
+    description       String?
+    image             String?  @map("image")
+    isEnabled         Boolean  @default(false) @map("is_enabled")
+    targetAudience    String?  @map("target_audience")
+    rolloutPercentage Int      @default(100) @map("rollout_percentage")
+    rules             Json?    @db.JsonB
+    environments      String[] @default([])
+    createdAt         DateTime @default(now()) @map("created_at")
+    updatedAt         DateTime @updatedAt @map("updated_at")
+    createdBy         String?  @map("created_by")
+    updatedBy         String?  @map("updated_by")
+
+    organizationId String?        @map("organization_id")
+
+    @@index([featureKey], name: "feature_flag_key_idx")
+    @@index([isEnabled], name: "feature_flag_enabled_idx")
+    @@index([slug])
+    @@map("feature_flags")
+}

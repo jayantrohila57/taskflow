@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-organizations-create-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Organizations Create Page",
+  "description": "The organizations create page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/create/page.tsx",
+      "content": "import { debugLog } from \"@/lib/utils\";\n\ninterface PageProps {\n  params: Promise<{\n    locale: string;\n  }>;\n}\n\nexport default async function OrganizationPage({ params }: PageProps) {\n  const { locale } = await params;\n  debugLog(\"ORGANIZATION:CREATE\", locale);\n  return <>{\"Create org\"}</>;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/create/page.tsx"
+    }
+  ]
+}

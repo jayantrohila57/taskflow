@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-loading",
+  "type": "registry:page",
+  "title": "Admin Loading",
+  "description": "The loading state for the admin route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/loading.tsx",
+      "content": "import LoadingComponent from \"@/components/shared/pages/loading-page\";\nimport { HydrateClient } from \"@/packages/trpc/server\";\n\nexport default function LoadingPage() {\n  return (\n    <HydrateClient>\n      <LoadingComponent />\n    </HydrateClient>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/loading.tsx"
+    }
+  ]
+}

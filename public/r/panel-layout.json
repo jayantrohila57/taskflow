@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "panel-layout",
+  "type": "registry:page",
+  "title": "Panel Layout",
+  "description": "The layout for the panel route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(panel)/layout.tsx",
+      "content": "import type React from \"react\";\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n  return children;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(panel)/layout.tsx"
+    }
+  ]
+}

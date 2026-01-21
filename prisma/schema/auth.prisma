@@ -1,0 +1,68 @@
+model Account {
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String?
+    access_token             String?
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String?
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in Int?
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id            String    @id @default(cuid())
+    sessionToken  String    @unique
+    userId        String
+    expires       DateTime
+    ipAddress     String?
+    userAgent     String?
+    activatedAt   DateTime?
+    endedAt       DateTime?
+    lastUsedAt    DateTime  @default(now())
+    lastActive    DateTime  @default(now())
+    isRevoked     Boolean   @default(false)
+    revokedAt     DateTime?
+    revokedReason String?
+    createdAt     DateTime  @default(now())
+    user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Authenticator {
+    credentialID         String
+    userId               String
+    providerAccountId    String
+    credentialPublicKey  String
+    counter              Int
+    credentialDeviceType String
+    credentialBackedUp   Boolean
+    transports           String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([userId, credentialID])
+    @@unique([credentialID])
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model PasswordHistory {
+    id        String   @id @default(cuid())
+    userId    String
+    password  String
+    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

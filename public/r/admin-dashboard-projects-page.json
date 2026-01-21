@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-projects-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Projects Page",
+  "description": "The projects page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/projects/page.tsx",
+      "content": "import { getTranslations } from \"next-intl/server\";\n\nimport GoBackButton from \"@/components/shared/dashboard/go-back\";\nimport ShareButton from \"@/components/shared/layout/share-button\";\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\";\nimport { Separator } from \"@/components/ui/separator\";\nimport { DataTable } from \"@/modules/project/components/table/data-table\";\nimport { columns } from \"@/modules/project/components/table/data-table-column\";\nimport { api } from \"@/packages/trpc/server\";\n\nexport default async function ProjectPageComponent() {\n  const { data } = await api.project.getProjects({});\n  const projects = data?.items;\n  const t = await getTranslations(\"PROJECT\");\n\n  return (\n    <div className=\"grid h-full w-full grid-cols-12 gap-2\">\n      <Card className=\"col-span-12 h-[89.5vh] overflow-hidden overflow-y-scroll rounded-xl text-wrap break-all\">\n        <CardHeader className=\"flex flex-row items-center justify-between\">\n          <div className=\"flex h-full w-full flex-row items-center justify-end gap-4\">\n            <GoBackButton />\n            <div className=\"h-full w-full\">\n              <CardTitle>{t(\"PROJECT_TITLE\")}</CardTitle>\n              <CardDescription>{t(\"PROJECT_DESC\")}</CardDescription>\n            </div>\n          </div>\n          <div className=\"flex h-full w-full flex-row items-center justify-end gap-4\">\n            <ShareButton />\n          </div>\n        </CardHeader>\n        <Separator />\n        <CardContent>\n          <DataTable data={projects ?? []} columns={columns} />\n        </CardContent>\n      </Card>\n    </div>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/projects/page.tsx"
+    }
+  ]
+}

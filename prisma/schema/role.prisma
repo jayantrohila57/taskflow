@@ -1,0 +1,63 @@
+model Role {
+    id          String    @id @default(cuid()) @map("id")
+    name        String    @unique @map("name")
+    description String?   @map("description")
+    code        String    @unique @map("code")
+    isSystem    Boolean   @default(false) @map("is_system")
+    isActive    Boolean   @default(true) @map("is_active")
+    isDefault   Boolean   @default(false) @map("is_default")
+    level       Int       @default(0) @map("level")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    permissions      RolePermission[]
+    OrganizationRole OrganizationRole[]
+    Project          Project[]          @relation("ProjectRoles")
+    ProjectRole      ProjectRole[]
+    Team             Team[]             @relation("TeamRoles")
+    TeamRole         TeamRole[]
+    UserRole         UserRole[]
+    User             User[]             @relation("UserRoles")
+    Task             Task[]             @relation("TaskRoles")
+    TaskRole         TaskRole[]
+
+    @@index([code], name: "role_code_idx")
+    @@index([isActive], name: "role_active_idx")
+    @@map("roles")
+}
+
+model Permission {
+    id          String    @id @default(cuid()) @map("id")
+    name        String    @unique @map("name")
+    description String?   @map("description")
+    code        String    @unique @map("code")
+    category    String?   @map("category")
+    isActive    Boolean   @default(true) @map("is_active")
+    isSystem    Boolean   @default(false) @map("is_system")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    deletedAt   DateTime? @map("deleted_at")
+
+    roles RolePermission[]
+
+    @@index([code], name: "permission_code_idx")
+    @@index([category], name: "permission_category_idx")
+    @@index([isActive], name: "permission_active_idx")
+    @@map("permissions")
+}
+
+model RolePermission {
+    id           String     @id @default(cuid()) @map("id")
+    roleId       String     @map("role_id")
+    permissionId String     @map("permission_id")
+    role         Role       @relation(fields: [roleId], references: [id])
+    permission   Permission @relation(fields: [permissionId], references: [id])
+    createdAt    DateTime   @default(now()) @map("created_at")
+    updatedAt    DateTime   @updatedAt @map("updated_at")
+
+    @@unique([roleId, permissionId], name: "role_permission_unique")
+    @@index([roleId], name: "role_permission_role_idx")
+    @@index([permissionId], name: "role_permission_permission_idx")
+    @@map("role_permissions")
+}

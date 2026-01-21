@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-layout",
+  "type": "registry:page",
+  "title": "Admin Layout",
+  "description": "The layout for the admin route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/layout.tsx",
+      "content": "import type React from \"react\";\n\nexport default function OrganizationLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return children;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/layout.tsx"
+    }
+  ]
+}

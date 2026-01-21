@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-page",
+  "type": "registry:page",
+  "title": "Admin Page",
+  "description": "The main page for the admin route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/page.tsx",
+      "content": "import { auth } from \"@/packages/next-auth\";\nimport { redirect } from \"@/packages/next-intl/utils/navigation\";\nimport { PATH } from \"@/resources/config/routes.config\";\n\ninterface PageProps {\n  params: Promise<{\n    locale: string;\n  }>;\n}\n\nexport default async function Page({ params }: PageProps) {\n  const { locale } = await params;\n  const session = await auth();\n\n  if (session) {\n    redirect({\n      href: PATH.HANDLER.ADMIN.DASHBOARD,\n      locale,\n    });\n  }\n  redirect({\n    href: PATH.PUBLIC.AUTH.ROOT,\n    locale,\n  });\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/page.tsx"
+    }
+  ]
+}

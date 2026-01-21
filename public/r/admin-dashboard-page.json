@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Page",
+  "description": "The dashboard page for the admin.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/page.tsx",
+      "content": "import { auth } from \"@/packages/next-auth\";\nimport { Prism as SyntaxHighlighter } from \"react-syntax-highlighter\";\nimport { atomDark as style } from \"react-syntax-highlighter/dist/esm/styles/prism\";\n\ninterface PageProps {\n  params: Promise<{\n    locale: string;\n  }>;\n}\n\nexport default async function Page({ params }: PageProps) {\n  const { locale } = await params;\n  const session = await auth();\n  const jsonString = JSON.stringify({ locale, session }, null, 2);\n  return (\n    <SyntaxHighlighter language=\"javascript\" style={style}>\n      {jsonString}\n    </SyntaxHighlighter>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/page.tsx"
+    }
+  ]
+}

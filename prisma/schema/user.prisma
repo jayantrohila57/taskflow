@@ -1,0 +1,52 @@
+model User {
+    id                   String    @id @default(cuid()) @map("id")
+    name                 String?   @map("name")
+    image                String?   @map("image")
+    displayName          String?   @map("display_name")
+    email                String?   @unique @map("email_address")
+    emailVerified        DateTime? @map("email_verified_at")
+    profileImage         String?   @map("profile_image_url")
+    hashedPassword       String?   @map("hashed_password")
+    twoFactorEnabled     Boolean   @default(false) @map("is_2fa_enabled")
+    twoFactorSecret      String?   @map("2fa_secret")
+    twoFactorBackupCodes String?   @map("2fa_backup_codes")
+    failedLoginAttempts  Int       @default(0) @map("failed_login_attempts")
+    lockedUntil          DateTime? @map("locked_until")
+    lastLoginAt          DateTime? @map("last_login_at")
+    lastPasswordChangeAt DateTime? @map("last_password_change_at")
+    preferredLanguage    String?   @default("en-US") @map("preferred_language")
+    preferredTheme       String?   @default("dark") @map("preferred_theme")
+    timezone             String?   @default("UTC") @map("timezone")
+    statusId             String?   @map("status_id")
+    isSystem             Boolean   @default(false) @map("is_system_user")
+    isArchived           Boolean   @default(false) @map("is_archived")
+    createdAt            DateTime  @default(now()) @map("created_at")
+    updatedAt            DateTime  @updatedAt @map("updated_at")
+    deletedAt            DateTime? @map("deleted_at")
+
+    PasswordHistory PasswordHistory[]
+    sessions        Session[]
+    accounts        Account[]
+    roles           Role[]            @relation("UserRoles")
+    UserRole        UserRole[]
+
+    @@index([email, statusId], name: "user_email_status_idx")
+    @@index([statusId], name: "user_status_idx")
+    @@map("users")
+    Authenticator Authenticator[]
+}
+
+model UserRole {
+    id        String   @id @default(cuid()) @map("id")
+    userId    String   @map("user_id")
+    roleId    String   @map("role_id")
+    user      User     @relation(fields: [userId], references: [id])
+    role      Role     @relation(fields: [roleId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([userId, roleId], name: "user_role_unique")
+    @@index([userId], name: "user_role_user_idx")
+    @@index([roleId], name: "user_role_role_idx")
+    @@map("user_roles")
+}

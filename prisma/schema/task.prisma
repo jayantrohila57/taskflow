@@ -1,0 +1,52 @@
+model Task {
+    id          String    @id @default(cuid()) @map("id")
+    title       String    @map("title")
+    description String?   @map("description")
+    code        String    @unique @map("code")
+    priority    Int       @default(0) @map("priority")
+    isActive    Boolean   @default(true) @map("is_active")
+    isArchived  Boolean   @default(false) @map("is_archived")
+    dueDate     DateTime? @map("due_date")
+    startDate   DateTime? @map("start_date")
+    endDate     DateTime? @map("end_date")
+    projectId   String    @map("project_id")
+    statusId    String?   @map("status_id")
+    typeId      String?   @map("type_id")
+    categoryId  String?   @map("category_id")
+    assigneeId  String?   @map("assignee_id")
+    reporterId  String?   @map("reporter_id")
+
+    organizationMemberAssigneeId String?   @map("org_member_assignee_id")
+    organizationMemberReporterId String?   @map("org_member_reporter_id")
+    createdAt                    DateTime  @default(now()) @map("created_at")
+    updatedAt                    DateTime  @updatedAt @map("updated_at")
+    deletedAt                    DateTime? @map("deleted_at")
+
+    roles       Role[]        @relation("TaskRoles")
+    TaskRole    TaskRole[]
+
+    @@index([projectId], name: "task_project_idx")
+    @@index([statusId], name: "task_status_idx")
+    @@index([typeId], name: "task_type_idx")
+    @@index([categoryId], name: "task_category_idx")
+    @@index([assigneeId], name: "task_assignee_idx")
+    @@index([reporterId], name: "task_reporter_idx")
+    @@index([organizationMemberAssigneeId], name: "task_org_member_assignee_idx")
+    @@index([organizationMemberReporterId], name: "task_org_member_reporter_idx")
+    @@map("tasks")
+}
+
+model TaskRole {
+    id        String   @id @default(cuid()) @map("id")
+    taskId    String   @map("task_id")
+    roleId    String   @map("role_id")
+    task      Task     @relation(fields: [taskId], references: [id])
+    role      Role     @relation(fields: [roleId], references: [id])
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([taskId, roleId], name: "task_role_unique")
+    @@index([taskId], name: "task_role_task_idx")
+    @@index([roleId], name: "task_role_role_idx")
+    @@map("task_roles")
+}

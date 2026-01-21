@@ -1,0 +1,671 @@
+# Commit Rules & Guidelines
+
+This document defines the commit standards, versioning rules, and development workflow for the Taskflow multi-tenant task and project management platform.
+
+## Overview
+
+This repository follows **Semantic Versioning** with phase-based development. Each phase corresponds to a minor version increment, while breaking changes require major version bumps.
+
+## Version System
+
+### Current Version: v0.1.0
+
+### Version Pattern
+
+- **Major**: Breaking changes (0.x.x → 1.x.x)
+- **Minor**: Phase completion (0.1.x → 0.2.x)
+- **Patch**: Bug fixes, documentation, minor improvements (0.1.0 → 0.1.1)
+
+### Phase-Based Versioning
+
+The project follows a structured phase approach where each completed phase triggers a minor version bump:
+
+- **Phase 1**: Core Authentication & Multi-tenancy (v0.2.0)
+- **Phase 2**: Task & Project Management (v0.3.0)
+- **Phase 3**: Team Collaboration (v0.4.0)
+- **Phase 4**: Advanced Features & Integrations (v0.5.0)
+- **Phase 5**: Analytics & Reporting (v0.6.0)
+- **Phase 6**: Production Readiness & Scaling (v0.7.0)
+
+## Commit Message Format
+
+### Standard Format
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+### Types
+
+- **feat**: New features (phase completion, major functionality)
+- **fix**: Bug fixes
+- **docs**: Documentation updates
+- **style**: Code formatting, linting (no functional changes)
+- **refactor**: Code refactoring without functional changes
+- **test**: Adding or updating tests
+- **chore**: Maintenance tasks, dependency updates
+- **perf**: Performance improvements
+
+### Scopes
+
+- **phase**: Phase completion and major milestones
+- **auth**: Authentication and authorization system
+- **org**: Multi-tenant organization management
+- **user**: User management and profiles
+- **task**: Task creation, assignment, and tracking
+- **project**: Project organization and management
+- **team**: Team collaboration features
+- **role**: Role-based access control (RBAC)
+- **api**: API development and endpoints
+- **db**: Database schema and migrations
+- **ui**: User interface components
+- **perf**: Performance improvements
+- **deps**: Dependency updates
+- **config**: Configuration changes
+- **docs**: Documentation updates
+- **pwa**: Progressive Web App features
+- **i18n**: Internationalization and localization
+
+### Examples
+
+#### Phase Completion (Minor Version)
+
+```bash
+feat(phase): Complete Phase 1 - Core Authentication & Multi-tenancy (v0.2.0)
+feat(org): implement organization management system (v0.2.0)
+```
+
+#### Documentation Updates
+
+```bash
+docs: update CHANGELOG.md for v0.2.0
+docs: synchronize README with current implementation
+docs: update PLAN.md with progress tracking
+```
+
+#### Code Changes
+
+```bash
+feat(auth): implement passkey authentication support
+feat(org): add role-based permission system
+feat(task): add task assignment and tracking
+fix(db): resolve migration issue with user table
+refactor(ui): optimize component structure
+style: apply prettier formatting rules
+```
+
+#### Version Bumps
+
+```bash
+chore: bump version to 0.2.0
+```
+
+## Complete Development Workflow
+
+### Automated Scripts
+
+The repository now has optimized scripts that handle the complete workflow:
+
+#### Development Commands
+
+```bash
+# Start development server
+pnpm run dev
+# Runs: next dev with hot reload
+
+# Production build with full validation
+pnpm run build
+# Runs: db:types → format → lint:check → next build
+
+# Database operations
+pnpm run db:types     # Generate Prisma types
+pnpm run db:generate   # Run migrations
+pnpm run db:studio     # Open Prisma Studio
+```
+
+#### Pre-commit Hook (Automatic)
+
+The pre-commit hook automatically handles staged files:
+
+```bash
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Check if there are staged files
+if git diff --cached --quiet; then
+  echo "🔄 Staged files detected, running workflow..."
+
+  # 1. Generate Prisma types first (may update generated types)
+  echo "📝 Generating Prisma types..."
+  pnpm run db:types
+
+  # 2. Format all files
+  echo "🎨 Formatting files..."
+  pnpm run format
+
+  # 3. Add formatted files to staging
+  git add .
+
+  # 4. Final lint check
+  echo "🔍 Running lint check..."
+  pnpm run lint:check
+
+  echo "✅ Pre-commit workflow complete"
+else
+  echo "ℹ️ No staged files, skipping pre-commit workflow"
+fi
+```
+
+### AI-Assisted Commit Workflow
+
+### Complete Automated Commit Process
+
+When you're ready to commit changes, use this AI-assisted workflow that handles the complete process:
+
+```bash
+# Trigger the AI commit workflow
+ai: run commit rules
+```
+
+#### Workflow Steps (Executed in Order)
+
+1. **Prisma Type Generation**
+
+   ```bash
+   pnpm run db:types
+   ```
+
+   - Generates updated Prisma types from schema changes
+   - Ensures type safety across the application
+
+2. **Markdown Files Validation**
+
+   - Scans all `.md` files for consistency
+   - Validates documentation structure and formatting
+   - Checks for broken links and references
+   - Ensures all docs follow project standards
+
+3. **Plan Progress Check**
+
+   - Analyzes current progress against PLAN.md
+   - Identifies completed tasks and milestones
+   - Checks phase completion status
+   - Validates implementation progress
+
+4. **Documentation Updates**
+
+   - Updates version numbers in relevant files
+   - Marks completed tasks in PLAN.md
+   - Updates CHANGELOG.md with new changes
+   - Synchronizes README.md with current state
+   - Updates any other documentation files as needed
+
+5. **Code Formatting**
+
+   ```bash
+   pnpm run format
+   ```
+
+   - Applies consistent formatting across all files
+   - Uses Prettier for optimal performance
+   - Ensures code style consistency
+
+6. **Linting**
+
+   ```bash
+   pnpm run lint
+   ```
+
+   - Runs comprehensive linting checks
+   - Validates code quality and standards
+   - Catches potential issues early
+
+7. **Build Validation**
+
+   ```bash
+   pnpm run build
+   ```
+
+   - Builds the entire application
+   - Validates all components and dependencies
+   - Ensures production readiness
+
+8. **Git Operations**
+
+   ```bash
+   git add .
+   git commit -m "<commit-message>"
+   ```
+
+   - Stages all changes
+   - Creates commit with appropriate message
+   - Ensures all generated files are included
+
+9. **Version Tagging**
+
+   ```bash
+   git tag v<version>
+   ```
+
+   - Creates version tag for the commit
+   - Follows semantic versioning rules
+   - Enables easy rollback and tracking
+
+10. **Tag Verification and Updates**
+
+- **Critical**: Ensure version tag points to the latest commit containing all version changes
+- If additional commits are made after version bump, update the tag:
+  ```bash
+  git tag -d v<version>        # Delete old tag
+  git tag v<version>            # Recreate tag on latest commit
+  ```
+- Verify tag points to correct commit:
+  ```bash
+  git show v<version> --oneline
+  ```
+- Tag must include ALL changes for that version (documentation, code, version bump)
+- Never push outdated tags to remote
+
+#### Usage Examples
+
+##### Regular Development Commit
+
+```bash
+ai: run commit rules
+# Output: feat(task): add new task management features (v0.1.1)
+```
+
+##### Phase Completion Commit
+
+```bash
+ai: run commit rules
+# Output: feat(phase): Complete Phase 1 - Core Authentication & Multi-tenancy (v0.2.0)
+```
+
+##### Bug Fix Commit
+
+```bash
+ai: run commit rules
+# Output: fix(auth): resolve session management issue (v0.1.1)
+```
+
+#### AI Commit Message Generation
+
+The AI will automatically generate appropriate commit messages based on:
+
+- **Type of changes** (feat, fix, docs, etc.)
+- **Scope** (phase, auth, org, task, project, api, db, ui, etc.)
+- **Version impact** (patch, minor, major)
+- **Content analysis** of modified files
+- **Progress status** from PLAN.md
+
+#### Error Handling
+
+If any step fails:
+
+- Process stops immediately
+- Clear error message provided
+- Suggestions for fixing the issue
+- Resume from failed step after fixes
+
+#### Quality Gates
+
+The workflow enforces these quality standards:
+
+- All type generation succeeds
+- All markdown files are valid
+- Documentation is consistent
+- Code formatting is applied
+- Linting passes without errors
+- Build completes successfully
+- Git operations complete cleanly
+
+## Manual Development Process
+
+### For Regular Development
+
+```bash
+# 1. Make your changes
+# Edit files, add features, fix bugs
+
+# 2. Stage your changes
+git add <specific-files>
+# OR git add . for all changes
+
+# 3. Commit (automatic pre-commit runs)
+git commit -m "feat(task): add new component"
+
+# Pre-commit automatically runs:
+# - db:types → format → lint:check
+```
+
+### For Releases (Phase Completion or Bug Fixes)
+
+```bash
+# 1. Complete your work
+# Finish phase or fix bugs
+
+# 2. Update documentation FIRST
+git add CHANGELOG.md PLAN.md README.md package.json
+
+# 3. Commit documentation updates
+git commit -m "docs: update CHANGELOG.md for v0.2.0"
+
+# 4. Bump version
+git commit -m "chore: bump version to 0.2.0"
+
+# 5. Phase completion/Bug fix commit
+git commit -m "feat(phase): Complete Phase 1 - Core Authentication & Multi-tenancy (v0.2.0)"
+
+# 6. Create tag
+git tag v0.2.0
+
+# 7. Push everything
+git push origin main v0.2.0
+```
+
+### Key Workflow Features
+
+- Type Generation: Runs before dev/build, and in pre-commit
+- Smart Staging: Automatically adds generated types to staging
+- Sequential Processing: db:types → format → lint:check
+- No Conflicts: Handles generated files properly
+- Git Add Awareness: Checks what changes before staging
+
+## Version Release Process
+
+### 1. Phase Completion
+
+When a phase is complete:
+
+1. **Update Documentation**
+
+   ```bash
+   docs: update CHANGELOG.md for v0.2.0
+   docs: update PLAN.md to mark Phase 1 complete
+   docs: update README.md with current state
+   ```
+
+2. **Version Bump**
+
+   ```bash
+   chore: bump version to 0.2.0
+   ```
+
+3. **Phase Completion Commit**
+
+   ```bash
+   feat(phase): Complete Phase 1 - Core Authentication & Multi-tenancy (v0.2.0)
+   ```
+
+4. **Create Tag**
+   ```bash
+   git tag v0.2.0
+   ```
+
+### 2. Patch Releases
+
+For bug fixes and minor improvements:
+
+1. **Fix Implementation**
+
+   ```bash
+   fix(auth): resolve session management issue
+   ```
+
+2. **Version Bump**
+
+   ```bash
+   chore: bump version to 0.1.1
+   ```
+
+3. **Documentation Update**
+
+   ```bash
+   docs: update CHANGELOG.md for v0.1.1
+   ```
+
+4. **Create Tag**
+   ```bash
+   git tag v0.1.1
+   ```
+
+## Documentation Updates Required
+
+### For Every Release
+
+Always update these files in order:
+
+1. **CHANGELOG.md** - Add new version entry with detailed changes
+2. **PLAN.md** - Update phase completion status if applicable
+3. **README.md** - Update current state and implemented features
+4. **package.json** - Version number (automated with bump commit)
+
+### Documentation Consistency Requirements
+
+**CRITICAL**: All documentation files must show consistent version information:
+
+- **package.json version** must match **PLAN.md current status**
+- **CHANGELOG.md** must have entry for the current version
+- **Version tag** must point to commit containing ALL documentation updates
+- **Version verification checklist**:
+
+  ```bash
+  # Check package.json version
+  grep '"version"' package.json
+
+  # Check PLAN.md status
+  grep "Current Status" PLAN.md
+
+  # Verify CHANGELOG has version entry
+  grep "## v[0-9]" CHANGELOG.md | head -1
+
+  # Verify tag points to latest commit
+  git show v<version> --oneline
+  ```
+
+- **If inconsistencies found**: Update documentation BEFORE creating final tag
+- **Never push**: Inconsistent version information across files
+
+### CHANGELOG Format
+
+```markdown
+## v0.2.0
+
+- Complete Phase 1 - Core Authentication & Multi-tenancy
+  - Multi-tenant organization management system
+  - Role-based access control (RBAC)
+  - Advanced authentication with 2FA and passkeys
+  - User management and profiles
+  - Basic task and project framework
+- Additional changes
+- More details
+```
+
+## Progress Tracking
+
+### Phase Progress
+
+Track progress in PLAN.md:
+
+- Completed phases
+- Current phase in development
+- Planned phases
+
+### Implementation Status
+
+In README.md:
+
+- Implemented features
+- In development
+- Planned features
+
+## Quality Gates
+
+### Pre-Commit Checks
+
+All commits must pass:
+
+```bash
+pnpm run lint      # ESLint + Prettier formatting and linting
+pnpm run build     # Next.js build
+pnpm run db:types  # Prisma type generation
+```
+
+### Pre-Release Checks
+
+Before creating a release tag:
+
+1. All tests pass
+2. Build succeeds
+3. Documentation is updated
+4. CHANGELOG is complete
+5. Version is bumped in package.json
+
+## Template-Specific Rules
+
+### What to Commit
+
+- Multi-tenant architecture improvements
+- Task and project management features
+- Authentication and authorization enhancements
+- Role-based access control system
+- Team collaboration features
+- Performance optimizations
+- Documentation updates
+- Bug fixes
+
+### What NOT to Commit
+
+- Real task data or demo content
+- Organization-specific configurations
+- One-off hacks or temporary fixes
+- Client-specific customizations
+- Hardcoded credentials or secrets
+
+### Breaking Changes
+
+- Require major version bump (0.x.x → 1.x.x)
+- Must be documented in CHANGELOG
+- Must update UPGRADING.md
+- Should be avoided when possible
+
+## Development Workflow
+
+### Feature Development
+
+1. Create feature branch from main
+2. Implement changes following commit rules
+3. Update documentation as needed
+4. Run quality gates
+5. Open pull request
+6. Merge to main after review
+
+### Phase Completion
+
+1. Ensure all phase tasks are complete
+2. Update all documentation files
+3. Bump version in package.json
+4. Create comprehensive changelog entry
+5. Create git tag
+6. Update PLAN.md phase status
+
+### Emergency Fixes
+
+1. Create hotfix branch from latest tag
+2. Implement fix with proper commit message
+3. Bump patch version
+4. Update changelog
+5. Create new tag
+6. Merge back to main
+
+## Commit Message Validation
+
+### Required Format
+
+- Type must be one of: feat, fix, docs, style, refactor, test, chore, perf
+- Scope should be relevant to the change
+- Description should be concise and clear
+- Phase completions must include version number
+
+### Examples of Good Commits
+
+```bash
+feat(org): add new organization management features
+feat(task): implement task assignment system
+fix(auth): resolve session management issue
+docs: update CHANGELOG.md for v0.2.0
+refactor(ui): optimize component structure
+chore: bump version to 0.1.1
+```
+
+### Examples of Bad Commits
+
+```bash
+fixed stuff
+update docs
+wip
+bug fix
+add feature
+```
+
+## Release Automation
+
+### Manual Release Steps
+
+1. Ensure all changes are committed
+2. Update package.json version
+3. Update CHANGELOG.md
+4. Update PLAN.md if phase complete
+5. Update README.md if needed
+6. Create git tag: `git tag v0.2.0`
+7. Push tag: `git push origin v0.2.0`
+
+### Version Bump Commands
+
+```bash
+# Patch version (0.1.0 → 0.1.1)
+npm version patch
+
+# Minor version (0.1.0 → 0.2.0)
+npm version minor
+
+# Major version (0.1.0 → 1.0.0)
+npm version major
+```
+
+## Checklist for Commits
+
+### Before Committing
+
+- [ ] Code follows project conventions
+- [ ] Linting passes (`pnpm run lint`)
+- [ ] Build succeeds (`pnpm run build`)
+- [ ] Tests pass (if applicable)
+- [ ] Documentation is updated if needed
+- [ ] Commit message follows format
+
+### Before Release
+
+- [ ] All quality gates pass
+- [ ] CHANGELOG.md is updated
+- [ ] PLAN.md is updated if phase complete
+- [ ] README.md reflects current state
+- [ ] Version is bumped in package.json
+- [ ] Git tag is created
+- [ ] Tag is pushed to remote
+
+## History & Context
+
+This commit system is based on:
+
+- **Semantic Versioning** for predictable releases
+- **Phase-based development** for structured progress
+- **Conventional Commits** for clear history
+- **Multi-tenant architecture** for enterprise task management
+
+The current version (v0.1.0) represents the initial foundation with basic project structure, authentication system, and development workflow ready for Phase 1 implementation.

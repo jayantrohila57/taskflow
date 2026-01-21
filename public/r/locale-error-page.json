@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "locale-error-page",
+  "type": "registry:page",
+  "title": "Locale Error Page",
+  "description": "The error page for the locale route.",
+  "files": [
+    {
+      "path": "src/app/[locale]/error.tsx",
+      "content": "'use client'\n\nimport Header from '@/components/shared/layout/header'\nimport ErrorPageComponent from '@/components/shared/pages/error-page'\nimport BgGridPattern from '@/components/shared/shell/bg-grid-pattern'\nimport { useLocale } from 'next-intl'\n\nexport default function Error({ error, reset }: { error: Error; reset: () => void }) {\n  const locale = useLocale()\n  return (\n    <>\n      <Header locale={locale} />\n      <ErrorPageComponent\n        error={error}\n        reset={reset}\n      />\n      <BgGridPattern />\n    </>\n  )\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/error.tsx"
+    }
+  ]
+}

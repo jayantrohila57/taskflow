@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-session-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Session Page",
+  "description": "The session page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/session/page.tsx",
+      "content": "import { Suspense } from \"react\";\n\nimport {\n  Card,\n  CardContent,\n  CardDescription,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\";\nimport { SessionStats } from \"@/modules/session/components/session-stats\";\nimport { SessionsTable } from \"@/modules/session/components/sessions-table\";\nimport { SessionsTableSkeleton } from \"@/modules/session/components/sessions-table-skeleton\";\n\nexport default function SessionManagementPage() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>{\"Session Management\"}</CardTitle>\n        <CardDescription>\n          {\"View and manage user sessions across your application.\"}\n        </CardDescription>\n      </CardHeader>\n      <CardContent>\n        <Suspense\n          fallback={<div className=\"bg-muted h-24 animate-pulse rounded-lg\" />}\n        >\n          <SessionStats />\n        </Suspense>\n      </CardContent>\n      <CardContent>\n        <Suspense fallback={<SessionsTableSkeleton />}>\n          <SessionsTable />\n        </Suspense>\n      </CardContent>\n    </Card>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/session/page.tsx"
+    }
+  ]
+}

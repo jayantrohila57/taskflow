@@ -1,0 +1,1125 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "my-app-structure",
+  "homepage": "your-app-homepage.com",
+  "items": [
+    {
+      "name": "locale-layout",
+      "type": "registry:page",
+      "title": "Locale Layout",
+      "description": "The main layout for the locale route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "locale-error-page",
+      "type": "registry:page",
+      "title": "Locale Error Page",
+      "description": "The error page for the locale route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/error.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/error.tsx"
+        }
+      ]
+    },
+    {
+      "name": "locale-loading-page",
+      "type": "registry:page",
+      "title": "Locale Loading Page",
+      "description": "The loading page for the locale route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "locale-not-found-page",
+      "type": "registry:page",
+      "title": "Locale Not Found Page",
+      "description": "The not found page for the locale route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/not-found.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/not-found.tsx"
+        }
+      ]
+    },
+    {
+      "name": "handler-layout",
+      "type": "registry:page",
+      "title": "Handler Layout",
+      "description": "The layout for the handler route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "handler-page",
+      "type": "registry:page",
+      "title": "Handler Page",
+      "description": "The page for the handler route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-layout",
+      "type": "registry:page",
+      "title": "Account Layout",
+      "description": "The layout for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-loading",
+      "type": "registry:page",
+      "title": "Account Loading",
+      "description": "The loading state for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-page",
+      "type": "registry:page",
+      "title": "Account Page",
+      "description": "The main page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-billing-page",
+      "type": "registry:page",
+      "title": "Account Billing Page",
+      "description": "The billing page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/billing/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/billing/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-notification-page",
+      "type": "registry:page",
+      "title": "Account Notification Page",
+      "description": "The notification page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/notification/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/notification/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-preference-page",
+      "type": "registry:page",
+      "title": "Account Preference Page",
+      "description": "The preference page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/preference/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/preference/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-profile-page",
+      "type": "registry:page",
+      "title": "Account Profile Page",
+      "description": "The profile page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/profile/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/profile/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-security-page",
+      "type": "registry:page",
+      "title": "Account Security Page",
+      "description": "The security page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/security/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/security/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-session-page",
+      "type": "registry:page",
+      "title": "Account Session Page",
+      "description": "The session page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/session/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/session/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "account-setting-page",
+      "type": "registry:page",
+      "title": "Account Setting Page",
+      "description": "The setting page for the account route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(account)/account/setting/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(account)/account/setting/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-layout",
+      "type": "registry:page",
+      "title": "Admin Layout",
+      "description": "The layout for the admin route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-loading",
+      "type": "registry:page",
+      "title": "Admin Loading",
+      "description": "The loading state for the admin route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-page",
+      "type": "registry:page",
+      "title": "Admin Page",
+      "description": "The main page for the admin route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Page",
+      "description": "The dashboard page for the admin.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-access-control-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Access Control Page",
+      "description": "The access control page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/Access-control/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/Access-control/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-organizations-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Organizations Page",
+      "description": "The organizations page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-organizations-create-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Organizations Create Page",
+      "description": "The organizations create page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/create/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/organizations/create/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-projects-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Projects Page",
+      "description": "The projects page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/projects/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/projects/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-session-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Session Page",
+      "description": "The session page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/session/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/session/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-support-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Support Page",
+      "description": "The support page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/support/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/support/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-team-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Team Page",
+      "description": "The team page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/team/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/team/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-users-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard Users Page",
+      "description": "The users page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard-users-id-page",
+      "type": "registry:page",
+      "title": "Admin Dashboard User Detail Page",
+      "description": "The user detail page for the admin dashboard.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/[id]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/[id]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-layout",
+      "type": "registry:page",
+      "title": "Panel Layout",
+      "description": "The layout for the panel route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-feedback-page",
+      "type": "registry:page",
+      "title": "Panel Feedback Page",
+      "description": "The feedback page for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/feedback/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/feedback/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-feedback-detail-page",
+      "type": "registry:page",
+      "title": "Panel Feedback Detail Page",
+      "description": "The feedback detail page for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/feedback/[feedbackId]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/feedback/[feedbackId]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-support-layout",
+      "type": "registry:page",
+      "title": "Panel Support Layout",
+      "description": "The support layout for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/support/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/support/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-support-tickets-page",
+      "type": "registry:page",
+      "title": "Panel Support Tickets Page",
+      "description": "The support tickets page for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/support/tickets/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/support/tickets/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-support-tickets-create-page",
+      "type": "registry:page",
+      "title": "Panel Support Tickets Create Page",
+      "description": "The support tickets create page for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/support/tickets/create/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/support/tickets/create/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "panel-support-tickets-detail-page",
+      "type": "registry:page",
+      "title": "Panel Support Tickets Detail Page",
+      "description": "The support tickets detail page for the panel.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(panel)/panel/support/tickets/[ticketId]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(panel)/panel/support/tickets/[ticketId]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-layout",
+      "type": "registry:page",
+      "title": "Protected Layout",
+      "description": "The layout for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-organization-layout",
+      "type": "registry:page",
+      "title": "Protected Organization Layout",
+      "description": "The organization layout for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-layout",
+      "type": "registry:page",
+      "title": "Organization Layout",
+      "description": "The layout for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-loading",
+      "type": "registry:page",
+      "title": "Organization Loading",
+      "description": "The loading state for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-page",
+      "type": "registry:page",
+      "title": "Organization Page",
+      "description": "The main page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-onboarding-page",
+      "type": "registry:page",
+      "title": "Organization Onboarding Page",
+      "description": "The onboarding page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/onboarding/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/onboarding/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-onboarding-step-page",
+      "type": "registry:page",
+      "title": "Organization Onboarding Step Page",
+      "description": "The onboarding step page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/onboarding/[step]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/onboarding/[step]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-project-page",
+      "type": "registry:page",
+      "title": "Organization Project Page",
+      "description": "The project page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/project/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/project/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-roles-page",
+      "type": "registry:page",
+      "title": "Organization Roles Page",
+      "description": "The roles page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/roles/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/roles/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-roles-permissions-page",
+      "type": "registry:page",
+      "title": "Organization Roles Permissions Page",
+      "description": "The roles permissions page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/roles/permissions/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/roles/permissions/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-users-page",
+      "type": "registry:page",
+      "title": "Organization Users Page",
+      "description": "The users page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/users/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/users/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "org-users-requested-page",
+      "type": "registry:page",
+      "title": "Organization Users Requested Page",
+      "description": "The users requested page for a specific organization route.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/org/[org]/users/requested/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/org/[org]/users/requested/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-layout",
+      "type": "registry:page",
+      "title": "Organization Layout (Root)",
+      "description": "The root layout for the organization route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-loading",
+      "type": "registry:page",
+      "title": "Organization Loading (Root)",
+      "description": "The root loading state for the organization route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-page",
+      "type": "registry:page",
+      "title": "Organization Page (Root)",
+      "description": "The root page for the organization route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-create-page",
+      "type": "registry:page",
+      "title": "Organization Create Page",
+      "description": "The create organization page.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/create/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/create/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-invitations-page",
+      "type": "registry:page",
+      "title": "Organization Invitations Page",
+      "description": "The organization invitations page.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/invitations/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/invitations/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-join-page",
+      "type": "registry:page",
+      "title": "Organization Join Page",
+      "description": "The organization join page.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/join/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/join/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-list-page",
+      "type": "registry:page",
+      "title": "Organization List Page",
+      "description": "The organization list page.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/list/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/list/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "organization-requests-page",
+      "type": "registry:page",
+      "title": "Organization Requests Page",
+      "description": "The organization requests page.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(organization)/organization/requests/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(organization)/organization/requests/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-support-layout",
+      "type": "registry:page",
+      "title": "Protected Support Layout",
+      "description": "The support layout for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(support)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(support)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-support-tickets-page",
+      "type": "registry:page",
+      "title": "Protected Support Tickets Page",
+      "description": "The support tickets page for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(support)/tickets/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(support)/tickets/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-support-tickets-create-page",
+      "type": "registry:page",
+      "title": "Protected Support Tickets Create Page",
+      "description": "The support tickets create page for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(support)/tickets/create/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(support)/tickets/create/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-support-tickets-detail-page",
+      "type": "registry:page",
+      "title": "Protected Support Tickets Detail Page",
+      "description": "The support tickets detail page for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(support)/tickets/[ticketId]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(support)/tickets/[ticketId]/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "protected-web-layout",
+      "type": "registry:page",
+      "title": "Protected Web Layout",
+      "description": "The web layout for the protected route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(protected)/(web)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(protected)/(web)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "public-layout",
+      "type": "registry:page",
+      "title": "Public Layout",
+      "description": "The layout for the public route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-layout",
+      "type": "registry:page",
+      "title": "Auth Layout",
+      "description": "The layout for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-page",
+      "type": "registry:page",
+      "title": "Auth Page",
+      "description": "The main page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-loading-page",
+      "type": "registry:page",
+      "title": "Auth Loading Page",
+      "description": "The loading page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/loading.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/loading.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-error-page",
+      "type": "registry:page",
+      "title": "Auth Error Page",
+      "description": "The error page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/error/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/error/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-forgot-password-page",
+      "type": "registry:page",
+      "title": "Auth Forgot Password Page",
+      "description": "The forgot password page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/forgot-password/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/forgot-password/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-passkey-page",
+      "type": "registry:page",
+      "title": "Auth Passkey Page",
+      "description": "The passkey page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/passkey/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/passkey/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-sign-in-page",
+      "type": "registry:page",
+      "title": "Auth Sign In Page",
+      "description": "The sign in page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/sign-in/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/sign-in/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-sign-up-page",
+      "type": "registry:page",
+      "title": "Auth Sign Up Page",
+      "description": "The sign up page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/sign-up/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/sign-up/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "auth-verify-page",
+      "type": "registry:page",
+      "title": "Auth Verify Page",
+      "description": "The verify page for the authentication route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(auth)/auth/verify/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(auth)/auth/verify/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-layout",
+      "type": "registry:page",
+      "title": "Site Layout",
+      "description": "The layout for the public site route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/layout.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-page",
+      "type": "registry:page",
+      "title": "Site Page",
+      "description": "The main page for the public site route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-feedback-page",
+      "type": "registry:page",
+      "title": "Site Misc Feedback Page",
+      "description": "The feedback page for the public site misc route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/feedback/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/feedback/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-legal-page",
+      "type": "registry:page",
+      "title": "Site Misc Legal Page",
+      "description": "The legal page for the public site misc route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/legal/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/legal/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-legal-cookies-settings-page",
+      "type": "registry:page",
+      "title": "Site Misc Legal Cookies Settings Page",
+      "description": "The cookies settings page for the public site misc legal route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/legal/cookies-settings/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/legal/cookies-settings/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-legal-privacy-policy-page",
+      "type": "registry:page",
+      "title": "Site Misc Legal Privacy Policy Page",
+      "description": "The privacy policy page for the public site misc legal route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/legal/privacy-policy/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/legal/privacy-policy/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-legal-terms-conditions-page",
+      "type": "registry:page",
+      "title": "Site Misc Legal Terms Conditions Page",
+      "description": "The terms and conditions page for the public site misc legal route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/legal/terms-conditions/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/legal/terms-conditions/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-misc-support-page",
+      "type": "registry:page",
+      "title": "Site Misc Support Page",
+      "description": "The support page for the public site misc route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/(misc)/support/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/(misc)/support/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-home-about-us-page",
+      "type": "registry:page",
+      "title": "Site Home About Us Page",
+      "description": "The about us page for the public site home route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/home/about-us/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/home/about-us/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-home-contact-us-page",
+      "type": "registry:page",
+      "title": "Site Home Contact Us Page",
+      "description": "The contact us page for the public site home route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/home/contact-us/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/home/contact-us/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-home-contact-us-sorry-page",
+      "type": "registry:page",
+      "title": "Site Home Contact Us Sorry Page",
+      "description": "The contact us sorry page for the public site home route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/home/contact-us/sorry/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/home/contact-us/sorry/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-home-contact-us-thankyou-page",
+      "type": "registry:page",
+      "title": "Site Home Contact Us Thank You Page",
+      "description": "The contact us thank you page for the public site home route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/home/contact-us/thankyou/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/home/contact-us/thankyou/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "site-home-frequently-ask-questions-page",
+      "type": "registry:page",
+      "title": "Site Home Frequently Asked Questions Page",
+      "description": "The frequently asked questions page for the public site home route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/(site)/home/frequently-ask-questions/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/(site)/home/frequently-ask-questions/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "form-page",
+      "type": "registry:page",
+      "title": "Form Page",
+      "description": "The form page for the public route group.",
+      "files": [
+        {
+          "path": "src/app/[locale]/(public)/form/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/(public)/form/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "rest-catch-all-page",
+      "type": "registry:page",
+      "title": "Rest Catch-all Page",
+      "description": "The catch-all page for unmatched routes.",
+      "files": [
+        {
+          "path": "src/app/[locale]/[...rest]/page.tsx",
+          "type": "registry:page",
+          "target": "app/[locale]/[...rest]/page.tsx"
+        }
+      ]
+    }
+  ]
+}

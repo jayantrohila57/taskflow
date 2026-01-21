@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-users-id-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard User Detail Page",
+  "description": "The user detail page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/[id]/page.tsx",
+      "content": "import { notFound } from \"next/navigation\";\n\nimport { UserDetail } from \"@/modules/user/components/user-manage\";\nimport type { UserTypes } from \"@/modules/user/validation/user.validation\";\nimport { api } from \"@/packages/trpc/server\";\n\ninterface UserDetailPageProps {\n  params: Promise<{\n    id: string;\n    locale: string;\n  }>;\n}\n\nexport default async function UserDetailPage({ params }: UserDetailPageProps) {\n  const { id } = await params;\n  try {\n    const { data } = await api.user.getFullUserDetailsById({ id });\n    if (!data) {\n      notFound();\n    }\n    const user = data as UserTypes[\"UserWithFullDetails\"];\n    return <UserDetail user={user} />;\n  } catch {\n    notFound();\n  }\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/users/[id]/page.tsx"
+    }
+  ]
+}

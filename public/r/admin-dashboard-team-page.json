@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "admin-dashboard-team-page",
+  "type": "registry:page",
+  "title": "Admin Dashboard Team Page",
+  "description": "The team page for the admin dashboard.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/handler/(admin)/admin/dashboard/team/page.tsx",
+      "content": "export default function Page() {\n  return <h1>{\"Welcome to page!\"}</h1>;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/handler/(admin)/admin/dashboard/team/page.tsx"
+    }
+  ]
+}

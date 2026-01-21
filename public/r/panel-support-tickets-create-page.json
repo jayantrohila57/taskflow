@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "panel-support-tickets-create-page",
+  "type": "registry:page",
+  "title": "Panel Support Tickets Create Page",
+  "description": "The support tickets create page for the panel.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(panel)/panel/support/tickets/create/page.tsx",
+      "content": "import Shell from \"@/components/shared/shell/shell\";\n\ninterface PageProps {\n  params: Promise<{\n    locale: string;\n  }>;\n}\n\nexport default async function Page({ params }: PageProps) {\n  return (\n    <Shell>\n      <Shell.Section>{\"Page\"}</Shell.Section>\n    </Shell>\n  );\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(panel)/panel/support/tickets/create/page.tsx"
+    }
+  ]
+}

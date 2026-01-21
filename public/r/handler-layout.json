@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "handler-layout",
+  "type": "registry:page",
+  "title": "Handler Layout",
+  "description": "The layout for the handler route group.",
+  "files": [
+    {
+      "path": "src/app/[locale]/(handler)/layout.tsx",
+      "content": "import type React from \"react\";\n\nexport default function Layout({ children }: { children: React.ReactNode }) {\n  return children;\n}\n",
+      "type": "registry:page",
+      "target": "app/[locale]/(handler)/layout.tsx"
+    }
+  ]
+}
