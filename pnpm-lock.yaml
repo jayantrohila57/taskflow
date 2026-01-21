@@ -130,13 +130,13 @@ importers:
         version: 3.13.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@trpc/client':
         specifier: ^11.0.3
-        version: 11.0.3(@trpc/server@11.0.3(typescript@5.8.3))(typescript@5.8.3)
+        version: 11.0.3(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)
       '@trpc/react-query':
         specifier: ^11.0.3
-        version: 11.0.3(@tanstack/react-query@5.72.0(react@19.1.0))(@trpc/client@11.0.3(@trpc/server@11.0.3(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.0.3(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
+        version: 11.0.3(@tanstack/react-query@5.72.0(react@19.1.0))(@trpc/client@11.0.3(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
       '@trpc/server':
-        specifier: ^11.0.3
-        version: 11.0.3(typescript@5.8.3)
+        specifier: ^11.8.0
+        version: 11.8.0(typescript@5.8.3)
       argon2:
         specifier: ^0.41.1
         version: 0.41.1
@@ -2542,8 +2542,8 @@ packages:
       react-dom: '>=18.2.0'
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.3':
-    resolution: {integrity: sha512-/qlaFITZ5a9OCI5mZiW94C8q9mr/wxCmb8GfP3k7VF9RuY4ql+M1UWrzS7xAj8bHekqG9PcR8qEWlOJ6NnXbQg==}
+  '@trpc/server@11.8.0':
+    resolution: {integrity: sha512-DphyQnLuyX2nwJCQGWQ9zYz4hZGvRhSBqDhQ0SH3tDhQ3PU4u68xofA0pJ741Ir4InEAFD+TtJVLAQy+wVOkiQ==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -2600,6 +2600,9 @@ packages:
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
+  '@types/estree@1.0.8':
+    resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
@@ -4061,6 +4064,7 @@ packages:
   next@15.2.8:
     resolution: {integrity: sha512-pe2trLKZTdaCuvNER0S9Wp+SP2APf7SfFmyUP9/w1SFA2UqmW0u+IsxCKkiky3n6um7mryaQIlgiDnKrf1ZwIw==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -7071,21 +7075,21 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.6': {}
 
-  '@trpc/client@11.0.3(@trpc/server@11.0.3(typescript@5.8.3))(typescript@5.8.3)':
+  '@trpc/client@11.0.3(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@trpc/server': 11.0.3(typescript@5.8.3)
+      '@trpc/server': 11.8.0(typescript@5.8.3)
       typescript: 5.8.3
 
-  '@trpc/react-query@11.0.3(@tanstack/react-query@5.72.0(react@19.1.0))(@trpc/client@11.0.3(@trpc/server@11.0.3(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.0.3(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)':
+  '@trpc/react-query@11.0.3(@tanstack/react-query@5.72.0(react@19.1.0))(@trpc/client@11.0.3(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3))(@trpc/server@11.8.0(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)':
     dependencies:
       '@tanstack/react-query': 5.72.0(react@19.1.0)
-      '@trpc/client': 11.0.3(@trpc/server@11.0.3(typescript@5.8.3))(typescript@5.8.3)
-      '@trpc/server': 11.0.3(typescript@5.8.3)
+      '@trpc/client': 11.0.3(@trpc/server@11.8.0(typescript@5.8.3))(typescript@5.8.3)
+      '@trpc/server': 11.8.0(typescript@5.8.3)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       typescript: 5.8.3
 
-  '@trpc/server@11.0.3(typescript@5.8.3)':
+  '@trpc/server@11.8.0(typescript@5.8.3)':
     dependencies:
       typescript: 5.8.3
 
@@ -7134,11 +7138,14 @@ snapshots:
 
   '@types/eslint@9.6.1':
     dependencies:
-      '@types/estree': 1.0.7
+      '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
     optional: true
 
   '@types/estree@1.0.7': {}
+
+  '@types/estree@1.0.8':
+    optional: true
 
   '@types/hast@2.3.10':
     dependencies:
